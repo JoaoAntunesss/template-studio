@@ -93,6 +93,56 @@
         .item-pendente{border-radius:14px}
         .login-box{border-radius:28px}
         #login-overlay{background:color-mix(in srgb,var(--text-color) 88%,transparent)}
+        /* Acabamento igual ao painel mais recente: títulos sem maiúsculas, métricas em destaque, faixas de cor, pílulas e entrada animada */
+        :root{--ink:var(--text-color);--muted:color-mix(in srgb,var(--text-color) 55%,#fff);--line:color-mix(in srgb,var(--text-color) 10%,transparent);--soft:color-mix(in srgb,var(--accent-color) 12%,#fff);--sh:0 18px 44px -22px color-mix(in srgb,var(--text-color) 38%,transparent);--ease:cubic-bezier(.2,.8,.2,1)}
+        .sec-titulo,.chart-card h3,.admin-card>h3,.agenda-admin-box h3{font-family:var(--font-title);text-transform:none!important;letter-spacing:0!important;font-size:1.45rem!important;color:var(--ink)!important;border-bottom:0!important}
+        .sub-box h4{color:var(--accent-dark)!important;letter-spacing:.06em;font-size:.78rem}
+        label{color:var(--muted)}
+        .login-box{padding:2.4rem 2rem 1.8rem;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);animation:subir .6s var(--ease) both}
+        .login-box h3{color:var(--ink);font-size:2rem}
+        .login-box input{border-radius:999px;padding:15px 18px;background:#fbf9fa;text-align:center;border:1.5px solid var(--line)}
+        .login-box button{border-radius:999px;padding:15px;text-transform:none;font-size:1rem;background:var(--accent-dark);box-shadow:0 12px 26px -12px var(--accent-dark)}
+        .login-box .btn-google{background:#fff;box-shadow:none;border:1.5px solid var(--line)}
+        .admin-header{box-shadow:var(--sh);animation:subir .6s var(--ease) both}.admin-header h2{color:#fff;font-size:1.7rem}
+        .admin-header .acoes a,.admin-header .acoes button{text-transform:none;font-size:.9rem;padding:11px 18px;transition:transform .2s var(--ease)}
+        .admin-header .acoes a:hover,.admin-header .acoes button:hover{transform:translateY(-2px)}
+        .admin-header .acoes{align-items:center}.admin-header .acoes a,.admin-header .acoes button{display:inline-flex;align-items:center;justify-content:center;line-height:1;height:44px;padding-top:0!important;padding-bottom:0!important;margin:0;font-family:var(--font-text)}
+        .metric-card,.chart-card,.admin-card:not([style*="dashed"]),.agenda-admin-box,.sub-box{background:#fff!important;border:0!important;border-radius:24px;box-shadow:0 1px 0 var(--line),var(--sh);animation:subir .7s var(--ease) both}
+        .sub-box{background:#fbf9fa!important;box-shadow:none;border-radius:16px}
+        .admin-card,.agenda-admin-box,.chart-card{padding:24px}
+        .metric-card{text-align:left;padding:22px 24px;position:relative;overflow:hidden;transition:transform .3s var(--ease)}
+        .metric-card:hover{transform:translateY(-4px)}
+        .metric-card::after{content:'';position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--soft)}
+        .metric-card h4,.metric-card .valor{position:relative;z-index:1}.metric-card h4{color:var(--muted);letter-spacing:.08em;margin-bottom:8px}
+        .metric-card .valor{color:var(--ink);font-weight:400;line-height:1.15}
+        .metrics-grid .metric-card:nth-child(1){background:var(--ink)!important}.metrics-grid .metric-card:nth-child(1) h4{color:rgba(255,255,255,.65)}
+        .metrics-grid .metric-card:nth-child(1) .valor{color:color-mix(in srgb,var(--accent-color) 55%,#fff)}.metrics-grid .metric-card:nth-child(1)::after{background:rgba(255,255,255,.06)}
+        .metrics-grid .metric-card:nth-child(2){animation-delay:.06s}.metrics-grid .metric-card:nth-child(3){animation-delay:.12s}
+        .admin-card[style*="#25D366"]{box-shadow:inset 5px 0 0 #25D366,0 1px 0 var(--line),var(--sh)}
+        .admin-card[style*="#8e44ad"]{box-shadow:inset 5px 0 0 #8e44ad,0 1px 0 var(--line),var(--sh)}
+        .admin-card[style*="#d9534f"]{box-shadow:inset 5px 0 0 #d9534f,0 1px 0 var(--line),var(--sh)}
+        .admin-card[style*="var(--accent-color)"]{box-shadow:inset 5px 0 0 var(--accent-color),0 1px 0 var(--line),var(--sh)}
+        .btn-add{text-transform:none;letter-spacing:0;font-size:.95rem;padding:13px;background:var(--accent-dark);transition:transform .2s var(--ease),filter .2s}
+        .btn-small{padding:8px 14px;font-size:.82rem;transition:transform .2s var(--ease),filter .2s}.btn-small:hover,.btn-add:hover{filter:brightness(.93);opacity:1}
+        .btn-add:active,.btn-small:active{transform:scale(.97)}
+        .btn-whatsapp{border-radius:999px;padding:7px 12px}
+        .paginacao-btn{border-radius:999px;background:#fff;border:1.5px solid var(--line);color:var(--ink)}.paginacao-btn.active{background:var(--ink);border-color:var(--ink)}
+        .badge{border-radius:999px;text-transform:none;padding:3px 9px;font-size:.68rem}
+        input,select,textarea{background:#fbf9fa;padding:12px 14px}input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent-color);background:#fff}
+        .search-bar{border:1.5px solid var(--line);background:#fbf9fa;padding:11px 16px}
+        .tabela-container-admin{border-radius:16px;border:1px solid var(--line)}
+        table.tabela-admin{border-radius:0}
+        table.tabela-admin th,table.tabela-admin td{border:0;border-bottom:1px solid var(--line);padding:11px 8px}
+        table.tabela-admin th{background:color-mix(in srgb,var(--accent-color) 8%,#fff);letter-spacing:.06em;font-size:.72rem}
+        table.tabela-admin tbody tr:hover{background:color-mix(in srgb,var(--accent-color) 4%,#fff)}
+        .item-pendente{border:0;background:color-mix(in srgb,var(--accent-color) 8%,#fff);padding:12px 14px}
+        .admin-list-item{border-bottom:1px solid var(--line);border-radius:10px;padding:12px 6px}
+        footer{border-top:0;color:var(--muted)}
+        @keyframes subir{from{opacity:0;transform:translateY(18px)}}
+        @media (max-width:768px){.admin-header h2{font-size:1.35rem}.admin-header .acoes a,.admin-header .acoes button{flex:1 1 auto;padding:10px 12px;font-size:.82rem;border-radius:14px}
+          .metrics-grid{grid-template-columns:1fr 1fr;gap:12px}.metrics-grid .metric-card:nth-child(1){grid-column:1/-1}.metric-card{padding:18px}.metric-card .valor{font-size:1.7rem}
+          .admin-card,.agenda-admin-box,.chart-card{padding:18px}}
+        @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
     </style>
 </head>
 <body>

@@ -72,6 +72,13 @@
         footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #888; border-top: 1px solid var(--border); margin-top: 3rem; }
         @media (max-width: 768px) { #admin-container { padding: 1rem 3%; } .admin-header { flex-direction: column; align-items: stretch; text-align: center; } .search-bar { width: 100%; } }
     
+        body.colaboradora .so-dona{display:none!important}
+        body:not(.equipa) .so-equipa{display:none!important}
+        .pill-prof{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;margin-left:6px;vertical-align:middle}
+        .cel-res{display:block;text-align:left;border-left:4px solid var(--accent-color);background:#fff;border-radius:8px;padding:4px 6px;margin:2px 0;font-size:.78rem;line-height:1.3}
+        .acesso{display:grid;grid-template-columns:140px 1fr auto auto;gap:10px;align-items:center;margin-bottom:8px}
+        .acesso input{margin:0}
+        @media(max-width:640px){.acesso{grid-template-columns:1fr 1fr}}
         /* Visual alinhado com o site novo */
         body{background:color-mix(in srgb,var(--accent-color) 6%,#fbf8f9)}
         .admin-header{background:var(--text-color);color:#fff;border-radius:24px;padding:22px 26px}
@@ -116,7 +123,7 @@
             </div>
         </div>
 
-        <div class="linha-titulo">
+        <div class="linha-titulo so-dona">
             <h3 class="sec-titulo" style="margin:0">📊 Resumo Financeiro</h3>
             <div>
                 <button class="btn-small btn-nav" data-mes="-1">&#8592; Mês Anterior</button>
@@ -124,13 +131,13 @@
                 <button class="btn-small btn-nav" data-mes="1">Próximo Mês &#8594;</button>
             </div>
         </div>
-        <div class="metrics-grid">
+        <div class="metrics-grid so-dona">
             <div class="metric-card"><h4>Faturação (Limpa)</h4><div class="valor" id="stat-faturacao">0,00 €</div></div>
             <div class="metric-card"><h4>Marcações do Mês</h4><div class="valor" id="stat-marcacoes">0</div></div>
             <div class="metric-card"><h4>Serviço Mais Popular</h4><div class="valor" id="stat-popular" style="font-size:1rem; margin-top:6px;">Nenhum</div></div>
         </div>
 
-        <div class="agenda-admin-box">
+        <div class="agenda-admin-box so-dona">
             <div class="linha-titulo">
                 <h3 class="sec-titulo" style="margin:0">👥 Gestão de Clientes (CRM)</h3>
                 <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
@@ -158,6 +165,7 @@
             <div class="linha-titulo">
                 <h3 class="sec-titulo" style="margin:0">📅 Visão Geral da Agenda</h3>
                 <div>
+                    <select id="agenda-prof" class="so-equipa so-dona" style="width:auto;margin:0 10px 0 0;padding:8px 12px"></select>
                     <button class="btn-small btn-nav" data-sem="-1">&#8592; Semana Anterior</button>
                     <span id="admin-mes-ano-texto" style="margin:0 15px; font-weight:bold;"></span>
                     <button class="btn-small btn-nav" data-sem="1">Próxima Semana &#8594;</button>
@@ -168,7 +176,15 @@
             </div>
         </div>
 
-        <div class="charts-grid">
+        <div class="agenda-admin-box so-equipa so-dona" id="box-equipa">
+            <h3 class="sec-titulo">👩‍💼 Por colaboradora (mês selecionado)</h3>
+            <div class="tabela-container-admin" style="margin-top:0"><table class="tabela-admin" style="min-width:520px"><thead><tr><th>Colaboradora</th><th>Marcações</th><th>Faltas</th><th>Faturação</th><th>Acesso ao painel</th></tr></thead><tbody id="equipa-body"></tbody></table></div>
+            <h3 class="sec-titulo" style="margin-top:22px">🔑 Acessos da equipa</h3>
+            <p style="font-size:.85rem;color:#666;margin-bottom:10px">Escreva o email (Google) de cada colaboradora. Quando ela entrar no painel com esse email, vê só a agenda e as marcações dela, sem faturação nem definições do salão.</p>
+            <div id="acessos"></div>
+        </div>
+
+        <div class="charts-grid so-dona">
             <div class="chart-card"><h3>Faturação Mensal (€)</h3><canvas id="graficoMensal"></canvas></div>
             <div class="chart-card"><h3>Faturação Semanal (€)</h3><canvas id="graficoSemanal"></canvas></div>
         </div>
@@ -196,6 +212,7 @@
                     </div>
                     <div class="sub-box">
                         <h4>2. Escolher Serviço</h4>
+                        <div class="so-equipa so-dona"><label>Profissional</label><select id="manual-prof"></select></div>
                         <label>Serviço</label>
                         <select id="manual-servico"></select>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -233,13 +250,13 @@
                 </div>
             </div>
 
-            <div class="admin-card" id="card-vouchers" style="border:1px solid #8e44ad;">
+            <div class="admin-card so-dona" id="card-vouchers" style="border:1px solid #8e44ad;">
                 <h3 style="color:#8e44ad;" id="titulo-vouchers"></h3>
                 <p style="font-size:0.8rem; color:#666; margin-bottom:10px;">Insira o valor LIMPO que recebeu da plataforma para entrar nos gráficos de faturação.</p>
                 <div id="admin-lista-vouchers" style="max-height:250px; overflow-y:auto;"></div>
             </div>
 
-            <div class="admin-card">
+            <div class="admin-card so-dona">
                 <h3 style="color:var(--accent-dark);">🏷️ Alterar Preço Fixo</h3>
                 <label>Serviço a alterar</label>
                 <select id="admin-select-servico"></select>
@@ -255,6 +272,7 @@
                 <h3 style="color:#d9534f;">🛡️ Bloquear Agenda</h3>
                 <label>Data a bloquear</label>
                 <input type="date" id="admin-bloqueio-data">
+                <div class="so-equipa so-dona"><label>Quem</label><select id="admin-bloqueio-prof"></select></div>
                 <label>Hora</label>
                 <select id="admin-bloqueio-hora"></select>
                 <label>Motivo</label>
@@ -262,7 +280,7 @@
                 <button class="btn-add" style="margin-top:5px; background:#d9534f;" id="btn-bloquear">Bloquear na Agenda</button>
             </div>
 
-            <div class="admin-card" style="border:1px solid var(--accent-color);">
+            <div class="admin-card so-dona" style="border:1px solid var(--accent-color);">
                 <h3 style="color:var(--accent-dark);">📢 Barra de Notícias</h3>
                 <textarea id="admin-noticias-texto" placeholder="Mensagem em destaque no topo do site" rows="3" style="resize:vertical;"></textarea>
                 <div style="display:flex; gap:10px;">
@@ -271,7 +289,7 @@
                 </div>
             </div>
 
-            <div class="admin-card" style="border:1px solid var(--accent-color);">
+            <div class="admin-card so-dona" style="border:1px solid var(--accent-color);">
                 <h3 style="color:var(--accent-dark);">✨ Campanhas & Descontos</h3>
                 <input type="text" id="admin-campanha-texto" placeholder="Título da promoção">
                 <select id="admin-campanha-servico"></select>
@@ -296,7 +314,7 @@
                 <div id="paginacao-reservas"></div>
             </div>
 
-            <div class="admin-card" style="grid-column:1 / -1; background:transparent; border:1px dashed #ccc;">
+            <div class="admin-card so-dona" style="grid-column:1 / -1; background:transparent; border:1px dashed #ccc;">
                 <h3 style="color:#888; font-size:1rem;">🔧 Manutenção</h3>
                 <p style="font-size:0.8rem; color:#777; margin-bottom:8px;">Reconstrói a agenda pública (horários ocupados) a partir das marcações. Útil depois de importar dados antigos.</p>
                 <button class="btn-small" style="background:#777;" id="btn-reconstruir">Reconstruir ocupação</button>
@@ -314,6 +332,8 @@
 (function () {
     const A = APP, L = A.L, $ = id => document.getElementById(id), esc = A.esc;
     A.aplicarTema(true);
+    const EQ = A.EQUIPA, TEAM = A.MODO_EQUIPA;
+    if (TEAM) document.body.classList.add('equipa');
 
     // ---------- Textos a partir de loja.js ----------
     document.title = `Painel ${L.admin.nome} | ${L.nome}`;
@@ -330,7 +350,7 @@
     $('admin-bloqueio-hora').innerHTML = '<option value="Todas">O Dia Todo (Fechado/Férias)</option>' + A.HORAS.map(h => `<option>${h}</option>`).join('');
     if (A.DEMO) {
         $('demo-bar').style.display = 'block';
-        $('login-texto').textContent = 'Modo demonstração: clique em "Entrar" (não precisa de dados).';
+        $('login-texto').innerHTML = TEAM ? 'Modo demonstração: clique em "Entrar" para ver como a dona.<br>Para ver como colaboradora, escreva <b>' + esc(EQ[0].id) + '@exemplo.pt</b> no email.' : 'Modo demonstração: clique em "Entrar" (não precisa de dados).';
         $('demo-reset').onclick = () => { if (confirm('Apagar as alterações e repor os dados de exemplo?')) A.db.reset(); };
     }
 
@@ -347,23 +367,48 @@
     let termoCRM = '', termoRes = '', sortCol = 'gasto', sortDir = -1;
     let mesFat = new Date(); mesFat.setDate(1);
     let semanaAdmin = A.segunda(new Date());
+    // Papel de quem entrou: dona (admin) ou colaboradora (só a sua agenda)
+    let PAPEL = { admin: false, prof: null }, staffDB = {}, convitesDB = {};
+    const nomeProf = id => { const p = A.prof(id); return p ? p.nome : ''; };
+    const corProf = id => { const p = A.prof(id); return (p && p.cor) || 'var(--accent-color)'; };
+    const pillProf = id => id && TEAM ? `<span class="pill-prof" style="background:${corProf(id)}">${esc(nomeProf(id))}</span>` : '';
+    const chaveEmail = e => String(e || '').trim().toLowerCase().replace(/\./g, ',');
     const precoAtual = s => precosDB[s.nome] !== undefined ? precosDB[s.nome] : s.preco;
     const servPorNome = n => L.servicos.find(s => s.nome === n);
 
     // ---------- Login (Firebase Auth) ----------
     let iniciado = false;
     function erroLogin(t) { $('login-erro').textContent = t; }
+    // Descobre o papel: admins/<uid> = dona; staff/<uid> = colaboradora; convite pelo email = liga a conta à colaboradora
+    async function descobrirPapel(user) {
+        const db = A.db;
+        try { if ((await db.ref('admins/' + user.uid).once('value')).val() === true) return { admin: true, prof: null }; } catch (e) {}
+        if (!TEAM) return null;
+        try { const st = (await db.ref('staff/' + user.uid).once('value')).val(); if (st && A.prof(st.id)) return { admin: false, prof: st.id }; } catch (e) {}
+        if (user.email) {
+            try {
+                const id = (await db.ref('convites/' + chaveEmail(user.email)).once('value')).val();
+                if (id && A.prof(id)) { await db.ref('staff/' + user.uid).set({ id, email: user.email.toLowerCase() }); return { admin: false, prof: id }; }
+            } catch (e) {}
+        }
+        return null;
+    }
     A.iniciar(true).then(() => {
-        A.auth.onAuthStateChanged(user => {
+        A.auth.onAuthStateChanged(async user => {
             if (!user) { $('login-overlay').style.display = 'flex'; $('admin-container').style.display = 'none'; return; }
-            // Confirma que esta conta é administradora (as regras só deixam ler reservas a admins)
-            A.db.ref('reservas').once('value').then(() => {
-                $('login-overlay').style.display = 'none'; $('admin-container').style.display = 'block';
-                if (!iniciado) { iniciado = true; carregarDados(); }
-            }).catch(() => {
-                erroLogin(`Esta conta (${user.email}) não tem acesso ao painel. Para a autorizar, adicione na base de dados: admins/${user.uid} = true`);
-                A.auth.signOut();
-            });
+            const p = await descobrirPapel(user);
+            if (!p) {
+                erroLogin(`Esta conta (${user.email}) não tem acesso ao painel. ${TEAM ? 'Peça à dona para adicionar o seu email em "Acessos da equipa".' : 'Para a autorizar, adicione na base de dados: admins/' + user.uid + ' = true'}`);
+                A.auth.signOut(); return;
+            }
+            PAPEL = p;
+            if (!p.admin) {
+                document.body.classList.add('colaboradora');
+                $('painel-titulo').textContent = `Olá, ${nomeProf(p.prof)} 👋`;
+                document.querySelector('.admin-header p').textContent = 'A sua agenda e as suas marcações';
+            }
+            $('login-overlay').style.display = 'none'; $('admin-container').style.display = 'block';
+            if (!iniciado) { iniciado = true; carregarDados(); }
         });
     }).catch(() => erroLogin('Não foi possível ligar ao servidor.'));
     $('btn-login').onclick = () => {
@@ -383,14 +428,21 @@
         preencherSelects();
         const db = A.db;
         db.ref('precos').on('value', s => { precosDB = {}; const v = s.val() || {}; Object.keys(v).forEach(k => precosDB[decodeURIComponent(k)] = v[k]); preencherSelects(); });
-        db.ref('reservas').on('value', s => {
+        // A colaboradora só lê as marcações dela (as regras da base de dados também o garantem)
+        const qRes = PAPEL.admin ? db.ref('reservas') : db.ref('reservas').orderByChild('prof').equalTo(PAPEL.prof);
+        qRes.on('value', s => {
             const v = s.val() || {}; reservasDB = Object.keys(v).map(id => ({ id, ...v[id] }));
             reservasDB.sort((a, b) => ((a.dataExata || '') + a.hora).localeCompare((b.dataExata || '') + b.hora));
-            atualizarDashboard(); renderAgenda(); renderPendentesWA();
+            atualizarDashboard(); renderAgenda(); renderPendentesWA(); renderEquipa();
         });
+        if (TEAM && PAPEL.admin) {
+            db.ref('staff').on('value', s => { staffDB = s.val() || {}; renderEquipa(); });
+            db.ref('convites').on('value', s => { convitesDB = s.val() || {}; renderAcessos(); renderEquipa(); });
+        }
         db.ref('bloqueios').on('value', s => {
-            const v = s.val() || {}; bloqueiosDB = []; bloqueiosMapa = {};
-            Object.keys(v).forEach(id => { const b = { id, ...v[id] }; bloqueiosDB.push(b); bloqueiosMapa[b.hora === 'Todas' ? b.data : b.data + '-' + b.hora] = b.motivo; });
+            const v = s.val() || {};
+            bloqueiosDB = Object.keys(v).map(id => ({ id, ...v[id] }));
+            bloqueiosMapa = A.mapaBloqueios(bloqueiosDB);
             bloqueiosDB.sort((a, b) => a.data.localeCompare(b.data));
             renderBloqueios(); renderAgenda();
         });
@@ -410,7 +462,15 @@
         sc.innerHTML = '<option value="Todos">Todos os Serviços</option>' + L.servicos.map(s => `<option value="${esc(s.nome)}">${esc(s.nome)}</option>`).join('');
         if (v1) ms.value = v1; if (v2) sp.value = v2;
         sc.value = campanha.servicoAlvo || 'Todos';
+        if (TEAM) {
+            const ops = EQ.map(p => `<option value="${esc(p.id)}">${esc(p.nome)}</option>`).join('');
+            const mp = $('manual-prof'), ap = $('agenda-prof'), bp = $('admin-bloqueio-prof'), a1 = mp.value, a2 = ap.value, a3 = bp.value;
+            mp.innerHTML = ops; ap.innerHTML = '<option value="*">Todas</option>' + ops; bp.innerHTML = '<option value="">O salão inteiro</option>' + ops;
+            if (a1) mp.value = a1; if (a2) ap.value = a2; if (a3) bp.value = a3;
+            if (!PAPEL.admin) { mp.value = PAPEL.prof; bp.value = PAPEL.prof; ap.value = PAPEL.prof; }
+        }
     }
+    const profManual = () => TEAM ? (PAPEL.admin ? $('manual-prof').value : PAPEL.prof) : null;
 
     // ---------- Marcações manuais ----------
     $('manual-telemovel').addEventListener('input', () => {
@@ -426,7 +486,9 @@
         const base = A.isoParaData(dIso), datas = [];
         const passo = { '1': [1, 0], 'semanal-4': [4, 7], 'semanal-8': [8, 7], 'quinzenal-4': [4, 14], 'mensal-3': [3, 'm'] }[rep];
         for (let i = 0; i < passo[0]; i++) { const d = new Date(base); if (passo[1] === 'm') d.setMonth(d.getMonth() + i); else d.setDate(d.getDate() + i * passo[1]); datas.push(A.iso(d)); }
-        datas.forEach(di => listaAInserir.push({ dataExata: di, diaTextoVisual: A.visual(di), hora, hIndex: A.HORAS.indexOf(hora), blocos: A.blocosDe(s), servicoNome: s.nome, preco: precoAtual(s), estadoPagamento: estado }));
+        const pid = profManual();
+        if (pid && !A.fazServico(A.prof(pid), s.nome) && !confirm(`${nomeProf(pid)} não costuma fazer "${s.nome}". Adicionar mesmo assim?`)) return;
+        datas.forEach(di => listaAInserir.push({ dataExata: di, diaTextoVisual: A.visual(di), hora, hIndex: A.HORAS.indexOf(hora), blocos: A.blocosDe(s), servicoNome: s.nome, preco: precoAtual(s), estadoPagamento: estado, ...(pid ? { prof: pid } : {}) }));
         $('manual-data').value = ''; $('manual-repeticao').value = '1'; $('manual-is-voucher').checked = false;
         renderListaAInserir();
     };
@@ -435,16 +497,17 @@
         const c = $('lista-pendentes-container'), b = $('btn-gravar-tudo');
         if (!listaAInserir.length) { c.innerHTML = '<p class="vazio">Nenhum serviço adicionado ainda.</p>'; b.style.display = 'none'; return; }
         let total = 0;
-        c.innerHTML = listaAInserir.map((it, i) => { total += it.preco; return `<div class="item-pendente"><div><strong>${esc(it.servicoNome)}</strong> ${badgePag(it.estadoPagamento)}<br><small>📅 ${it.diaTextoVisual} às ${it.hora}</small></div><div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:bold;color:var(--accent-dark)">${A.eur(it.preco)}</span><button class="btn-small" data-rm="${i}">X</button></div></div>`; }).join('');
+        c.innerHTML = listaAInserir.map((it, i) => { total += it.preco; return `<div class="item-pendente"><div><strong>${esc(it.servicoNome)}</strong> ${badgePag(it.estadoPagamento)}${pillProf(it.prof)}<br><small>📅 ${it.diaTextoVisual} às ${it.hora}</small></div><div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:bold;color:var(--accent-dark)">${A.eur(it.preco)}</span><button class="btn-small" data-rm="${i}">X</button></div></div>`; }).join('');
         b.textContent = `💾 Gravar Tudo na Agenda (${listaAInserir.length} serviços | Valor Base: ${A.eur(total)})`; b.style.display = 'block';
     }
     $('lista-pendentes-container').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { listaAInserir.splice(+b.dataset.rm, 1); renderListaAInserir(); } });
     renderListaAInserir();
 
     // ocupação calculada a partir das reservas (o painel vê tudo)
+    // chave: dia-hora (uma pessoa) ou dia-hora|prof (equipa) → lista de marcações nesse horário
     function mapaOcupacao() {
         const m = {};
-        reservasDB.forEach(r => A.slotsDe(r).forEach((h, k) => { m[r.dataExata + '-' + h] = { id: r.id, isMain: k === 0, cliente: r.clienteNome, servico: r.servicoNome }; }));
+        reservasDB.forEach(r => A.slotsDe(r).forEach((h, k) => { const key = r.dataExata + '-' + h + (TEAM ? '|' + (r.prof || '') : ''); (m[key] = m[key] || []).push({ id: r.id, isMain: k === 0, cliente: r.clienteNome, servico: r.servicoNome, prof: r.prof }); }));
         return m;
     }
 
@@ -456,8 +519,8 @@
         listaAInserir.forEach(it => {
             const id = A.db.ref('reservas').push().key;
             up['reservas/' + id] = { ...it, clienteNome: nome, clienteEmail: 'N/A', clienteTelemovel: tel, clienteNif: 'N/A', pagamento: 'Manual', status: 'ativo', dataRegisto: new Date().toISOString(), mensagemEnviada: false };
-            A.slotsDe(it).forEach(h => { if (oc[it.dataExata + '-' + h]) conflitos.push(`${it.diaTextoVisual} ${h}`); else up[`ocupacao/${it.dataExata}/${h}`] = id; });
-            msg += `📅 *${it.diaTextoVisual}* às *${it.hora}* | ${it.servicoNome}\n`;
+            A.slotsDe(it).forEach(h => { if (oc[it.dataExata + '-' + h + (TEAM ? '|' + it.prof : '')]) conflitos.push(`${it.diaTextoVisual} ${h}`); else up[A.chaveOcup(it.dataExata, h, it.prof)] = id; });
+            msg += `📅 *${it.diaTextoVisual}* às *${it.hora}* | ${it.servicoNome}${it.prof && TEAM ? ' com ' + nomeProf(it.prof) : ''}\n`;
         });
         if (conflitos.length && !confirm(`Atenção: já existe marcação em ${[...new Set(conflitos)].slice(0, 5).join(', ')}${conflitos.length > 5 ? '…' : ''}.\nGravar mesmo assim (sobreposto)?`)) return;
         msg += '\n' + L.mensagens.despedida;
@@ -473,13 +536,13 @@
     };
 
     // ---------- WhatsApp pendentes ----------
-    const msgConfirmacao = r => A.tpl(L.mensagens.confirmacao, { nome: r.clienteNome, servico: r.servicoNome, data: r.diaTextoVisual, hora: r.hora, loja: L.nome });
+    const msgConfirmacao = r => A.tpl(L.mensagens.confirmacao, { nome: r.clienteNome, servico: r.servicoNome + (TEAM && r.prof ? ' com ' + nomeProf(r.prof) : ''), data: r.diaTextoVisual, hora: r.hora, loja: L.nome });
     const pendentesWA = () => { const h = A.iso(new Date()); return reservasDB.filter(r => !r.mensagemEnviada && r.dataExata >= h && r.status !== 'noshow'); };
     function renderPendentesWA() {
         const p = pendentesWA(), c = $('lista-pendentes-whatsapp');
         if (!p.length) { c.innerHTML = '<p class="vazio">Nenhuma cliente a aguardar confirmação! 🎉</p>'; return; }
         c.innerHTML = p.map(r => `<div class="item-pendente" style="background:#fafafa;border:1px solid #eee;">
-            <div style="line-height:1.4"><strong>${esc(r.clienteNome)}</strong><br><small>📅 <b>${r.diaTextoVisual}</b> às <b>${r.hora}</b> | ${esc(r.servicoNome)}</small><br><small style="color:#666">📱 ${esc(r.clienteTelemovel)}</small></div>
+            <div style="line-height:1.4"><strong>${esc(r.clienteNome)}</strong>${pillProf(r.prof)}<br><small>📅 <b>${r.diaTextoVisual}</b> às <b>${r.hora}</b> | ${esc(r.servicoNome)}</small><br><small style="color:#666">📱 ${esc(r.clienteTelemovel)}</small></div>
             <div style="display:flex;align-items:center;gap:8px;">
                 ${A.telValido(r.clienteTelemovel) ? `<button class="btn-small" style="background:#25D366" data-wa="${r.id}">📲 Enviar</button>` : '<span style="color:#d9534f;font-size:0.75rem;font-weight:bold">S/ Tel</span>'}
                 <button class="btn-small" style="background:#999" data-enviado="${r.id}" title="Marcar como enviado">✔</button>
@@ -510,8 +573,8 @@
         const r = reservasDB.find(x => x.id === id), u = { ['reservas/' + id]: null };
         if (r) A.slotsDe(r).forEach(h => {
             // só liberta o horário se pertencer a esta marcação
-            const outra = reservasDB.find(x => x.id !== id && x.dataExata === r.dataExata && A.slotsDe(x).includes(h));
-            u[`ocupacao/${r.dataExata}/${h}`] = outra ? outra.id : null;
+            const outra = reservasDB.find(x => x.id !== id && x.dataExata === r.dataExata && (!TEAM || x.prof === r.prof) && A.slotsDe(x).includes(h));
+            u[A.chaveOcup(r.dataExata, h, r.prof)] = outra ? outra.id : null;
         });
         A.db.ref().update(u);
     }
@@ -529,12 +592,21 @@
         const dias = [...Array(7)].map((_, i) => { const d = new Date(semanaAdmin); d.setDate(d.getDate() + i); return d; });
         $('agenda-admin-thead-tr').innerHTML = '<th style="width:70px">Hora</th>' + dias.map(d => `<th>${A.DIAS_NOME[d.getDay()]}<br><small style="font-size:0.7rem;color:#888">${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}</small></th>`).join('');
         const oc = mapaOcupacao(), hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+        // Equipa: "Todas" mostra todas lado a lado; ou só uma pessoa (a colaboradora vê sempre só a sua)
+        const filtro = TEAM ? (PAPEL.admin ? ($('agenda-prof').value || '*') : PAPEL.prof) : null;
+        const pessoas = TEAM ? (filtro === '*' ? EQ.map(p => p.id) : [filtro]) : [null];
         $('agenda-admin-body').innerHTML = A.HORAS.map(h => `<tr><td style="font-weight:bold;background:var(--bg-color);color:var(--accent-dark)">${h}</td>${dias.map(d => {
-            const di = A.iso(d), k = di + '-' + h, mot = bloqueiosMapa[di] || bloqueiosMapa[k], o = oc[k];
-            if (o) return `<td class="bloco-admin-reservado" style="${d < hoje ? 'opacity:.6' : ''}">${o.isMain ? `<strong style="color:var(--text-color)">${esc(o.cliente)}</strong><br><small>${esc(o.servico)}</small>` : '↓'}</td>`;
+            const di = A.iso(d);
+            const ocs = pessoas.flatMap(pid => oc[di + '-' + h + (TEAM ? '|' + pid : '')] || []);
+            if (ocs.length) {
+                if (!TEAM) { const o = ocs[0]; return `<td class="bloco-admin-reservado" style="${d < hoje ? 'opacity:.6' : ''}">${o.isMain ? `<strong style="color:var(--text-color)">${esc(o.cliente)}</strong><br><small>${esc(o.servico)}</small>` : '↓'}</td>`; }
+                return `<td style="background:#f3eef0;padding:4px;${d < hoje ? 'opacity:.6' : ''}">${ocs.map(o => `<span class="cel-res" style="border-left-color:${corProf(o.prof)}">${o.isMain ? `<b>${esc(o.cliente)}</b><br>${esc(o.servico)}${pessoas.length > 1 ? ' · ' + esc(nomeProf(o.prof)) : ''}` : `↓ ${pessoas.length > 1 ? esc(nomeProf(o.prof)) : ''}`}</span>`).join('')}</td>`;
+            }
             if (d < hoje) return '<td style="background:#f5f5f5;color:#ccc">-</td>';
-            if (!A.aberto(d, h)) return '<td class="bloco-admin-descanso">Fechado</td>';
-            if (mot) return `<td class="bloco-admin-descanso">${esc(mot)}</td>`;
+            const abertos = pessoas.filter(pid => A.aberto(d, h, pid));
+            if (!abertos.length) return '<td class="bloco-admin-descanso">Fechado</td>';
+            const mot = abertos.map(pid => A.bloqueado(bloqueiosMapa, di, h, pid)).filter(Boolean);
+            if (mot.length === abertos.length) return `<td class="bloco-admin-descanso">${esc(mot[0])}</td>`;
             return '<td style="color:#aaa">Livre</td>';
         }).join('')}</tr>`).join('');
     }
@@ -542,13 +614,14 @@
     // ---------- Bloqueios, notícias, campanhas, preços ----------
     $('btn-bloquear').onclick = () => {
         const data = $('admin-bloqueio-data').value; if (!data) { alert('Selecione uma data.'); return; }
-        A.db.ref('bloqueios').push({ data, hora: $('admin-bloqueio-hora').value, motivo: $('admin-bloqueio-motivo').value.trim() || 'Fechado' })
+        const quem = TEAM ? (PAPEL.admin ? $('admin-bloqueio-prof').value : PAPEL.prof) : '';
+        A.db.ref('bloqueios').push({ data, hora: $('admin-bloqueio-hora').value, motivo: $('admin-bloqueio-motivo').value.trim() || 'Fechado', ...(quem ? { prof: quem } : {}) })
             .then(() => { alert('Agenda bloqueada com sucesso!'); $('admin-bloqueio-data').value = ''; $('admin-bloqueio-motivo').value = ''; });
     };
     function renderBloqueios() {
-        const hoje = A.iso(new Date()), lst = bloqueiosDB.filter(b => b.data >= hoje);
+        const hoje = A.iso(new Date()), lst = bloqueiosDB.filter(b => b.data >= hoje && (PAPEL.admin || !b.prof || b.prof === PAPEL.prof)).sort((a, b) => a.data.localeCompare(b.data));
         $('admin-lista-bloqueios').innerHTML = !lst.length ? '<p class="vazio">Sem dias bloqueados.</p>' :
-            lst.map(b => `<div class="admin-list-item"><span>📅 <strong>${A.visual(b.data)}</strong> (${b.hora === 'Todas' ? 'Dia todo' : 'às ' + b.hora})<br><small style="color:#d9534f">${esc(b.motivo)}</small></span><button class="btn-small" data-desbloq="${b.id}">Desbloquear</button></div>`).join('');
+            lst.map(b => `<div class="admin-list-item"><span>📅 <strong>${A.visual(b.data)}</strong> (${b.hora === 'Todas' ? 'Dia todo' : 'às ' + b.hora})${b.prof ? pillProf(b.prof) : TEAM ? ' <small>(salão)</small>' : ''}<br><small style="color:#d9534f">${esc(b.motivo)}</small></span>${PAPEL.admin || b.prof === PAPEL.prof ? `<button class="btn-small" data-desbloq="${b.id}">Desbloquear</button>` : ''}</div>`).join('');
     }
     $('btn-noticia').onclick = () => A.db.ref('config/noticiasBarra').set($('admin-noticias-texto').value.trim()).then(() => alert('Barra atualizada!'));
     $('btn-noticia-off').onclick = () => A.db.ref('config/noticiasBarra').set('').then(() => alert('Barra desativada!'));
@@ -567,9 +640,42 @@
     $('btn-reconstruir').onclick = () => {
         if (!confirm('Reconstruir os horários ocupados do site a partir de todas as marcações?')) return;
         const oc = {};
-        reservasDB.forEach(r => A.slotsDe(r).forEach(h => { (oc[r.dataExata] = oc[r.dataExata] || {})[h] = r.id; }));
+        reservasDB.forEach(r => A.slotsDe(r).forEach(h => { const o = (oc[r.dataExata] = oc[r.dataExata] || {}); if (TEAM && r.prof) (o[r.prof] = o[r.prof] || {})[h] = r.id; else o[h] = r.id; }));
         A.db.ref('ocupacao').set(oc).then(() => alert('Ocupação reconstruída.'));
     };
+
+    // ---------- Equipa (só a dona) ----------
+    $('agenda-prof').onchange = renderAgenda;
+    function renderEquipa() {
+        if (!TEAM || !PAPEL.admin) return;
+        const pref = `${mesFat.getFullYear()}-${String(mesFat.getMonth() + 1).padStart(2, '0')}`;
+        const ligadas = new Set(Object.values(staffDB).map(x => x.id));
+        $('equipa-body').innerHTML = EQ.map(p => {
+            const rs = reservasDB.filter(r => r.prof === p.id && (r.dataExata || '').startsWith(pref));
+            const falt = rs.filter(r => r.status === 'noshow').length;
+            const fat = rs.filter(r => r.status !== 'noshow').reduce((a, r) => a + (isVoucher(r.estadoPagamento) ? 0 : isVoucherPago(r.estadoPagamento) ? (parseFloat(r.precoLimpo) || 0) : (r.preco || 0)), 0);
+            return `<tr><td style="text-align:left"><span class="pill-prof" style="background:${corProf(p.id)};margin:0 8px 0 0">&nbsp;</span><b>${esc(p.nome)}</b></td><td>${rs.length - falt}</td><td style="color:${falt ? '#d9534f' : '#5cb85c'};font-weight:bold">${falt}</td><td style="font-weight:bold;color:var(--accent-dark)">${A.eur(fat)}</td><td>${ligadas.has(p.id) ? '✅ Ligada' : Object.values(convitesDB).includes(p.id) ? '⏳ Convite enviado' : '—'}</td></tr>`;
+        }).join('');
+    }
+    function renderAcessos() {
+        if (!TEAM || !PAPEL.admin) return;
+        const emailDe = id => { const k = Object.keys(convitesDB).find(k => convitesDB[k] === id); return k ? k.replace(/,/g, '.') : ''; };
+        $('acessos').innerHTML = EQ.map(p => `<div class="acesso"><b>${esc(p.nome)}</b><input type="email" data-ac="${esc(p.id)}" value="${esc(emailDe(p.id))}" placeholder="email@gmail.com"><button class="btn-small" style="background:var(--accent-dark)" data-acg="${esc(p.id)}">Guardar</button><button class="btn-small" style="background:#999" data-acr="${esc(p.id)}">Retirar acesso</button></div>`).join('');
+    }
+    $('acessos').addEventListener('click', e => {
+        const g = e.target.closest('[data-acg]'), r = e.target.closest('[data-acr]');
+        if (g) {
+            const id = g.dataset.acg, email = $('acessos').querySelector(`[data-ac="${id}"]`).value.trim();
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { alert('Escreva um email válido.'); return; }
+            const u = {}; Object.keys(convitesDB).forEach(k => { if (convitesDB[k] === id) u['convites/' + k] = null; }); u['convites/' + chaveEmail(email)] = id;
+            A.db.ref().update(u).then(() => alert(`Feito. A ${nomeProf(id)} já pode entrar no painel com ${email}.`));
+        }
+        if (r) {
+            const id = r.dataset.acr; if (!confirm(`Retirar o acesso da ${nomeProf(id)} ao painel?`)) return;
+            const u = {}; Object.keys(convitesDB).forEach(k => { if (convitesDB[k] === id) u['convites/' + k] = null; }); Object.keys(staffDB).forEach(uid => { if (staffDB[uid].id === id) u['staff/' + uid] = null; });
+            A.db.ref().update(u);
+        }
+    });
 
     // ---------- CRM ----------
     $('pesquisa-crm').oninput = e => { termoCRM = e.target.value.toLowerCase(); pagCRM = 1; processarCRM(); };
@@ -611,7 +717,7 @@
     // ---------- Lista de marcações ----------
     $('pesquisa-reservas').oninput = e => { termoRes = e.target.value.toLowerCase(); pagRes = 1; processarReservas(); };
     function processarReservas() {
-        reservasProc = reservasRaw.filter(r => [r.clienteNome, r.clienteTelemovel, r.servicoNome, r.diaTextoVisual].some(v => v && String(v).toLowerCase().includes(termoRes)));
+        reservasProc = reservasRaw.filter(r => [r.clienteNome, r.clienteTelemovel, r.servicoNome, r.diaTextoVisual, nomeProf(r.prof)].some(v => v && String(v).toLowerCase().includes(termoRes)));
         renderReservas();
     }
     function renderReservas() {
@@ -623,7 +729,7 @@
             const badge = e === 'Já Pago' ? '<span class="badge b-pago">Já Pago</span>' : isVoucher(e) ? `<span class="badge b-voucher">${esc(VN)}</span>` : isVoucherPago(e) ? `<span class="badge b-pago">${esc(VN)} Pago (${A.eur(r.precoLimpo)})</span>` : '<span class="badge b-apagar">A Pagar</span>';
             const podePagar = !falta && e !== 'Já Pago' && !isVoucher(e) && !isVoucherPago(e);
             return `<div class="admin-list-item" style="${falta ? 'opacity:0.6;background:#f9f9f9' : ''}">
-                <span><strong>${esc(r.clienteNome)}</strong> — <b style="color:var(--accent-dark)">${A.eur(r.preco)}</b> (${esc(r.pagamento || '-')}) ${badge} ${falta ? '<span style="color:#d9534f;font-weight:bold;margin-left:10px">[FALTOU]</span>' : ''}
+                <span><strong>${esc(r.clienteNome)}</strong>${pillProf(r.prof)} — <b style="color:var(--accent-dark)">${A.eur(r.preco)}</b> (${esc(r.pagamento || '-')}) ${badge} ${falta ? '<span style="color:#d9534f;font-weight:bold;margin-left:10px">[FALTOU]</span>' : ''}
                 <br>📅 ${r.diaTextoVisual} às ${r.hora} | <i>${esc(r.servicoNome)}</i>
                 <br><small>📱 ${esc(r.clienteTelemovel)}${r.clienteEmail && r.clienteEmail !== 'N/A' ? ' · ✉️ ' + esc(r.clienteEmail) : ''}${r.clienteNif && r.clienteNif !== 'N/A' && r.clienteNif !== 'Consumidor Final' ? ' · NIF ' + esc(r.clienteNif) : ''}</small>
                 ${A.telValido(r.clienteTelemovel) ? `<br><button class="btn-whatsapp" data-wa="${r.id}">📲 Enviar Confirmação</button>` : ''}</span>
@@ -667,7 +773,7 @@
         clientesRaw = Object.keys(cli).map(k => ({ tel: k, ...cli[k] }));
         reservasRaw = reservasDB.slice().reverse();
         processarCRM(); processarReservas();
-        graficos(fMes, fSem);
+        graficos(fMes, fSem); renderEquipa();
     }
     function graficos(m, s) {
         if (!window.Chart) return;

@@ -197,6 +197,23 @@ section{padding:110px 0}
   .arrow{display:none}
 }
 
+/* ---------- Equipa ---------- */
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.member{background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);text-align:left}
+.member img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .8s var(--ease)}
+.member:hover img{transform:scale(1.04)}
+.member div{padding:18px 20px 22px}.member h3{font-size:1.45rem}.member p{color:var(--muted);font-size:.92rem}
+.member button{margin-top:12px;font-weight:700;color:var(--accent-dark);text-decoration:underline;text-underline-offset:4px}
+.profs{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:4px 2px}
+.profs::-webkit-scrollbar{display:none}
+.pf{flex:none;width:104px;border-radius:var(--r-md);border:1.5px solid var(--line);padding:12px 8px;text-align:center;transition:transform .2s var(--ease),border-color .25s,background .25s}
+.pf img,.pf .any{width:58px;height:58px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block}
+.pf .any{display:grid;place-items:center;background:var(--soft);color:var(--accent-dark)}
+.pf b{display:block;font-size:.92rem}.pf small{display:block;font-size:.72rem;color:var(--muted);line-height:1.3}
+.pf:hover{border-color:var(--accent-color)}
+.pf[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:#fff}.pf[aria-pressed=true] small{color:color-mix(in srgb,#fff 70%,transparent)}
+.sum img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none}
+
 /* ---------- Galeria ---------- */
 .mosaic{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:230px;gap:14px}
 .mosaic button{border-radius:var(--r-md);overflow:hidden;position:relative;background:var(--soft)}
@@ -310,6 +327,7 @@ footer a{text-decoration:none}
     <a href="#" class="brand" aria-label="Início"><img id="logo" alt=""></a>
     <ul id="menu">
       <li><a href="#servicos">Serviços</a></li>
+      <li id="li-equipa" style="display:none"><a href="#equipa">Equipa</a></li>
       <li><a href="#trabalhos">Trabalhos</a></li>
       <li id="li-aval"><a href="#avaliacoes">Avaliações</a></li>
       <li><a href="#contactos">Contactos</a></li>
@@ -352,20 +370,24 @@ footer a{text-decoration:none}
   </div>
 </section>
 
+<section id="equipa" style="display:none">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><h2>A nossa equipa</h2><p>Escolha com quem quer marcar, ou deixe-nos escolher a primeira livre.</p></div></div>
+    <div class="team reveal" id="team"></div>
+  </div>
+</section>
+
 <section id="marcar">
   <div class="wrap">
     <div class="sec-head reveal"><div><h2>Marcar online</h2><p>Só aparecem as horas em que o serviço cabe na agenda. Recebe a confirmação logo a seguir.</p></div></div>
     <div class="book reveal">
       <aside class="book-side">
-        <h3>Três passos</h3>
-        <ol class="steps" id="steps">
-          <li class="on" data-s="1"><span class="n">1</span><span>Serviço<small id="st1">Escolha o que quer fazer</small></span></li>
-          <li data-s="2"><span class="n">2</span><span>Dia<small id="st2">Veja os dias com vagas</small></span></li>
-          <li data-s="3"><span class="n">3</span><span>Hora<small id="st3">Escolha e confirme</small></span></li>
-        </ol>
+        <h3 id="steps-t">Três passos</h3>
+        <ol class="steps" id="steps"></ol>
       </aside>
       <div class="book-main">
         <div class="blk"><label for="b-serv">Serviço</label><select class="select" id="b-serv"></select></div>
+        <div class="blk" id="blk-prof" style="display:none"><span class="lbl" id="lbl-prof">Com quem</span><div class="profs" id="profs" role="group" aria-labelledby="lbl-prof"></div></div>
         <div class="blk"><span class="lbl" id="lbl-dia">Dia</span>
           <div class="days-wrap"><button class="arrow" data-scroll="-1" aria-label="Dias anteriores">‹</button><div class="days" id="days" role="group" aria-labelledby="lbl-dia"></div><button class="arrow" data-scroll="1" aria-label="Mais dias">›</button></div>
         </div>
@@ -426,7 +448,7 @@ footer a{text-decoration:none}
   <div class="sheet-in">
     <button class="close" data-fechar="bookingModal" aria-label="Fechar">×</button>
     <h3 id="bk-t">Confirmar marcação</h3>
-    <div class="sum"><span class="ic" id="sum-ic"></span><div><b id="sum-serv"></b><small id="modalInfo"></small></div><span class="pr" id="modalPrecoTotal"></span></div>
+    <div class="sum"><span class="ic" id="sum-ic"></span><div><b id="sum-serv"></b><small id="modalInfo"></small><small id="sum-prof" style="display:block"></small></div><span class="pr" id="modalPrecoTotal"></span></div>
     <div class="field"><label for="clienteNome">Nome</label><input id="clienteNome" maxlength="80" autocomplete="name" placeholder="O seu nome"></div>
     <div class="field"><label for="clienteTelemovel">Telemóvel (WhatsApp)</label><input id="clienteTelemovel" type="tel" maxlength="20" autocomplete="tel" placeholder="9xx xxx xxx"></div>
     <div class="field"><label for="clienteEmail">Email <span style="font-weight:400;color:var(--muted)">(opcional)</span></label><input id="clienteEmail" type="email" maxlength="120" autocomplete="email" placeholder="para receber a confirmação"></div>
@@ -453,6 +475,8 @@ footer a{text-decoration:none}
   const A = APP, L = A.L, $ = id => document.getElementById(id), esc = A.esc, nav = document.getElementById('nav');
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   A.aplicarTema(false);
+  const EQ = A.EQUIPA, TEAM = A.MODO_EQUIPA;
+  let profSel = '*';
   document.documentElement.style.setProperty('--paper', L.cores.fundo);
 
   // ---------- Ícones por categoria ----------
@@ -521,6 +545,18 @@ footer a{text-decoration:none}
     if (AV.link) $('aval-link').href = AV.link; else $('aval-link').style.display = 'none';
   } else $('li-aval').style.display = 'none';
 
+  // Passos (3 para uma pessoa, 4 com equipa)
+  const PASSOS = TEAM ? [['Serviço', 'Escolha o que quer fazer'], ['Com quem', 'Escolha a profissional'], ['Dia', 'Veja os dias com vagas'], ['Hora', 'Escolha e confirme']] : [['Serviço', 'Escolha o que quer fazer'], ['Dia', 'Veja os dias com vagas'], ['Hora', 'Escolha e confirme']];
+  $('steps-t').textContent = TEAM ? 'Quatro passos' : 'Três passos';
+  $('steps').innerHTML = PASSOS.map(([t, d], i) => `<li data-s="${i + 1}" data-k="${t}"><span class="n">${i + 1}</span><span>${t}<small>${d}</small></span></li>`).join('');
+  const passoN = k => PASSOS.findIndex(p => p[0] === k) + 1;
+  const stTxt = (k, t) => { const li = $('steps').querySelector(`[data-k="${k}"] small`); if (li) li.textContent = t; };
+  if (TEAM) {
+    $('equipa').style.display = 'block'; $('li-equipa').style.display = 'list-item'; $('blk-prof').style.display = 'block';
+    $('team').innerHTML = EQ.map(p => `<article class="member"><img src="${esc(p.foto || '')}" alt="${esc(p.nome)}" loading="lazy"><div><h3>${esc(p.nome)}</h3><p>${esc(p.cargo || '')}</p><button type="button" data-marcar-com="${esc(p.id)}">Marcar com ${esc(p.nome)}</button></div></article>`).join('');
+    $('team').onclick = e => { const b = e.target.closest('[data-marcar-com]'); if (!b) return; const pid = b.dataset.marcarCom, p = A.prof(pid); if (!A.fazServico(p, L.servicos[servSel].nome)) { const i = L.servicos.findIndex(s => A.fazServico(p, s.nome)); if (i >= 0) servSel = i; } profSel = pid; escolherServico(servSel, true); $('marcar').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
+  }
+
   // ---------- Navegação ----------
   const mob = $('mob-cta');
   let naMarcacao = false;
@@ -582,15 +618,25 @@ footer a{text-decoration:none}
   // ---------- Disponibilidade ----------
   const agoraMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
   const hm = h => +h.slice(0, 2) * 60 + +h.slice(3);
-  function livres(d, blocos) {
+  // Horas livres para um serviço de N blocos. pid = profissional, '*' = qualquer uma (devolve a 1.ª livre em quem[hora])
+  let quem = {};
+  function livresDe(d, blocos, pid) {
     const di = A.iso(d), hoje = A.iso(new Date()) === di, out = [];
     if (bloqueiosMapa[di]) return out;
     A.HORAS.forEach((h, i) => {
       if (hoje && hm(h) <= agoraMin() + 30) return;
-      for (let k = 0; k < blocos; k++) { const x = A.HORAS[i + k]; if (!x || !A.aberto(d, x) || (ocupacao[di] && ocupacao[di][x]) || bloqueiosMapa[di + '-' + x]) return; }
+      for (let k = 0; k < blocos; k++) { const x = A.HORAS[i + k]; if (!x || !A.aberto(d, x, pid) || A.ocupadoEm(ocupacao, di, x, pid) || A.bloqueado(bloqueiosMapa, di, x, pid)) return; }
       out.push(h);
     });
     return out;
+  }
+  function livres(d, blocos, pid = profSel, servNome = L.servicos[servSel].nome) {
+    if (!TEAM) return livresDe(d, blocos, null);
+    const lista = pid === '*' ? EQ.filter(p => A.fazServico(p, servNome)).map(p => p.id) : [pid];
+    const m = {};
+    lista.forEach(id => livresDe(d, blocos, id).forEach(h => { if (!m[h]) m[h] = id; }));
+    quem = m;
+    return Object.keys(m).sort();
   }
   const DIAS_TOTAL = 28;
   const proxDias = () => [...Array(DIAS_TOTAL)].map((_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + i); return d; });
@@ -600,18 +646,31 @@ footer a{text-decoration:none}
     return (i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : `${curto(d)}, ${d.getDate()}/${d.getMonth() + 1}`) + ' às ' + h;
   }
 
-  function escolherServico(i) {
+  function escolherServico(i, manterProf) {
     servSel = i; $('b-serv').value = i;
-    passo(2);
-    const s = L.servicos[i]; $('st1').textContent = s.nome;
+    const s = L.servicos[i]; stTxt('Serviço', s.nome);
+    if (TEAM) {
+      if (!manterProf && profSel !== '*' && !A.fazServico(A.prof(profSel), s.nome)) profSel = '*';
+      renderProfs(); passo(passoN('Com quem') + 1);
+    } else passo(2);
     renderDias();
   }
+  function renderProfs() {
+    const s = L.servicos[servSel], ok = EQ.filter(p => A.fazServico(p, s.nome));
+    if (profSel !== '*' && !ok.find(p => p.id === profSel)) profSel = '*';
+    $('profs').innerHTML = (ok.length > 1 ? `<button type="button" class="pf" data-pf="*" aria-pressed="${profSel === '*'}"><span class="any"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5M14.5 15c2.8-.3 5.4 1.2 6 4.6"/></svg></span><b>Qualquer uma</b><small>a primeira livre</small></button>` : '') +
+      ok.map(p => `<button type="button" class="pf" data-pf="${esc(p.id)}" aria-pressed="${profSel === p.id || ok.length === 1}"><img src="${esc(p.foto || '')}" alt=""><b>${esc(p.nome)}</b><small>${esc(p.cargo || '')}</small></button>`).join('');
+    if (ok.length === 1) profSel = ok[0].id;
+    stTxt('Com quem', profSel === '*' ? 'Qualquer uma' : A.prof(profSel).nome);
+  }
+  $('profs').onclick = e => { const b = e.target.closest('[data-pf]'); if (!b) return; profSel = b.dataset.pf; renderProfs(); diaSel = null; renderDias(); };
+  const abertoDia = d => A.HORAS.some(h => !TEAM ? A.aberto(d, h) : profSel === '*' ? EQ.some(p => A.fazServico(p, L.servicos[servSel].nome) && A.aberto(d, h, p.id)) : A.aberto(d, h, profSel));
   function renderDias() {
     const bl = A.blocosDe(L.servicos[servSel]);
     const dias = proxDias();
     const info = dias.map(d => ({ d, n: livres(d, bl).length }));
     if (!diaSel || !info.find(x => A.iso(x.d) === diaSel && x.n)) { const f = info.find(x => x.n); diaSel = f ? A.iso(f.d) : null; }
-    $('days').innerHTML = info.map(({ d, n }) => { const di = A.iso(d); return `<button type="button" class="day" data-dia="${di}" aria-pressed="${di === diaSel}" ${n ? '' : 'disabled'} aria-label="${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}, ${n ? n + ' horários livres' : 'sem vagas'}"><small>${curto(d)}</small><b>${d.getDate()}</b><i>${n ? n + ' vagas' : A.aberto(d, A.HORAS.find(h => A.aberto(d, h)) || '00:00') ? 'cheio' : 'fechado'}</i></button>`; }).join('');
+    $('days').innerHTML = info.map(({ d, n }) => { const di = A.iso(d); return `<button type="button" class="day" data-dia="${di}" aria-pressed="${di === diaSel}" ${n ? '' : 'disabled'} aria-label="${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}, ${n ? n + ' horários livres' : 'sem vagas'}"><small>${curto(d)}</small><b>${d.getDate()}</b><i>${n ? n + ' vagas' : abertoDia(d) ? 'cheio' : 'fechado'}</i></button>`; }).join('');
     const on = $('days').querySelector('[aria-pressed=true]'), dz = $('days'); if (on) dz.scrollLeft = on.offsetLeft - dz.offsetLeft - dz.clientWidth / 2 + on.clientWidth / 2;
     renderSlots();
   }
@@ -621,9 +680,9 @@ footer a{text-decoration:none}
     const box = $('slots');
     if (!diaSel) { box.innerHTML = '<p class="empty">Sem vagas nas próximas semanas para este serviço. Fale connosco pelo WhatsApp.</p>'; return; }
     const d = A.isoParaData(diaSel), hs = livres(d, A.blocosDe(L.servicos[servSel]));
-    $('st2').textContent = d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
+    stTxt('Dia', d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' }));
     if (!hs.length) { box.innerHTML = '<p class="empty">Este dia ficou sem vagas. Escolha outro dia.</p>'; return; }
-    passo(3);
+    passo(PASSOS.length);
     const grp = [['Manhã', hs.filter(h => hm(h) < 780)], ['Tarde', hs.filter(h => hm(h) >= 780)]].filter(g => g[1].length);
     let k = 0;
     box.innerHTML = grp.map(([n, l]) => `<div class="slots-grp"><small>${n}</small><div class="slots">${l.map(h => `<button type="button" class="slot" style="--i:${k++}" data-h="${h}">${h}</button>`).join('')}</div></div>`).join('');
@@ -633,14 +692,17 @@ footer a{text-decoration:none}
 
   function proximaVaga() {
     const minBl = Math.min(...L.servicos.map(A.blocosDe));
-    for (const d of proxDias()) { const l = livres(d, minBl); if (l.length) return { d, h: l[0] }; }
+    for (const d of proxDias()) {
+      const l = TEAM ? [...new Set(EQ.flatMap(p => livresDe(d, minBl, p.id)))].sort() : livresDe(d, minBl, null);
+      if (l.length) return { d, h: l[0] };
+    }
     return null;
   }
   function renderVaga() {
     const v = proximaVaga(), b = $('vaga');
     if (!v) { b.style.display = 'none'; return; }
     b.style.display = 'flex'; $('vaga-txt').textContent = quando(v.d, v.h);
-    b.onclick = () => { diaSel = A.iso(v.d); renderDias(); $('marcar').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
+    b.onclick = () => { diaSel = A.iso(v.d); profSel = '*'; if (TEAM) renderProfs(); renderDias(); $('marcar').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
   }
   function tudo() { renderServicos(); renderDias(); renderVaga(); }
 
@@ -653,9 +715,11 @@ footer a{text-decoration:none}
   addEventListener('keydown', e => { if (e.key !== 'Escape') return; document.querySelectorAll('.sheet.on').forEach(s => fechar(s.id)); lb.classList.remove('on'); });
 
   function abrirModal(dIso, hora) {
-    cel = { dIso, hora };
-    const s = L.servicos[servSel], d = A.isoParaData(dIso);
-    $('sum-ic').innerHTML = iconFor(s.cat); $('sum-serv').textContent = s.nome;
+    const pid = TEAM ? (profSel === '*' ? quem[hora] : profSel) : null;
+    cel = { dIso, hora, pid };
+    const s = L.servicos[servSel], d = A.isoParaData(dIso), p = pid && A.prof(pid);
+    $('sum-ic').innerHTML = p && p.foto ? `<img src="${esc(p.foto)}" alt="">` : iconFor(s.cat); $('sum-serv').textContent = s.nome;
+    $('sum-prof').textContent = p ? 'com ' + p.nome : '';
     $('modalInfo').textContent = `${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })} às ${hora}`;
     $('modalPrecoTotal').textContent = eur(precoFinal(s).final);
     $('bk-err').textContent = '';
@@ -677,7 +741,7 @@ footer a{text-decoration:none}
     if (!nome) { $('bk-err').textContent = 'Escreva o seu nome.'; $('clienteNome').focus(); return; }
     if (!A.telValido(tel)) { $('bk-err').textContent = 'Escreva um telemóvel com 9 dígitos.'; $('clienteTelemovel').focus(); return; }
     const d = A.isoParaData(cel.dIso), i = A.HORAS.indexOf(cel.hora);
-    if (!livres(d, blocos).includes(cel.hora)) { $('bk-err').textContent = 'Esta hora acabou de ficar ocupada. Escolha outra.'; return; }
+    if (!livresDe(d, blocos, cel.pid).includes(cel.hora)) { $('bk-err').textContent = 'Esta hora acabou de ficar ocupada. Escolha outra.'; return; }
     const btn = $('btnConfirmar'); btn.disabled = true; btn.textContent = 'A confirmar…';
     const id = A.db.ref('reservas').push().key, up = {};
     up['reservas/' + id] = {
@@ -685,14 +749,15 @@ footer a{text-decoration:none}
       clienteNome: nome, clienteEmail: email || 'N/A', clienteTelemovel: tel, clienteNif: nif, pagamento,
       estadoPagamento: 'A Pagar no Dia', status: 'ativo', dataRegisto: new Date().toISOString(), mensagemEnviada: false
     };
+    if (cel.pid) up['reservas/' + id].prof = cel.pid;
     // Escrita atómica: se outra pessoa marcou o mesmo horário entretanto, as regras recusam tudo.
-    for (let k = 0; k < blocos; k++) up[`ocupacao/${cel.dIso}/${A.HORAS[i + k]}`] = id;
+    for (let k = 0; k < blocos; k++) up[A.chaveOcup(cel.dIso, A.HORAS[i + k], cel.pid)] = id;
     try { await A.db.ref().update(up); }
     catch (e) { btn.disabled = false; btn.textContent = 'Confirmar marcação'; $('bk-err').textContent = 'Esta hora acabou de ficar ocupada. Escolha outra.'; return; }
     btn.disabled = false; btn.textContent = 'Confirmar marcação';
     if (email && L.emailjs.publicKey && window.emailjs) emailjs.send(L.emailjs.servico, L.emailjs.template, { cliente_nome: nome, cliente_email: email, servico_nome: s.nome, dia: A.visual(cel.dIso), hora: cel.hora, preco: A.eur(preco), pagamento, loja: L.nome }).catch(() => {});
     $('bookingModal').classList.remove('on');
-    $('successInfo').textContent = `${s.nome}, ${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })} às ${cel.hora}. Até breve!`;
+    $('successInfo').textContent = `${s.nome}${cel.pid ? ' com ' + A.prof(cel.pid).nome : ''}, ${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })} às ${cel.hora}. Até breve!`;
     $('btnGoogleCalendar').href = linkCalendar(s.nome, cel.dIso, cel.hora, blocos);
     ['clienteNome', 'clienteTelemovel', 'clienteEmail', 'clienteNif'].forEach(x => $(x).value = '');
     abrir('successModal'); confetti();
@@ -715,8 +780,7 @@ footer a{text-decoration:none}
     db.ref('precos').on('value', s => { precosDB = {}; const v = s.val() || {}; Object.keys(v).forEach(k => precosDB[decodeURIComponent(k)] = v[k]); renderServicos(); });
     db.ref('ocupacao').on('value', s => { ocupacao = s.val() || {}; renderDias(); renderVaga(); });
     db.ref('bloqueios').on('value', s => {
-      bloqueiosMapa = {}; const v = s.val() || {};
-      Object.values(v).forEach(b => { if (b.hora === 'Todas') bloqueiosMapa[b.data] = b.motivo; else bloqueiosMapa[b.data + '-' + b.hora] = b.motivo; });
+      bloqueiosMapa = A.mapaBloqueios(Object.values(s.val() || {}));
       renderDias(); renderVaga();
     });
     db.ref('config/campanha').on('value', s => { campanha = s.val() || { texto: '', desconto: 0, servicoAlvo: 'Todos' }; campanhaBanner(); renderServicos(); });

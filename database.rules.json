@@ -2,42 +2,97 @@
   "rules": {
     ".read": false,
     ".write": false,
-
     "admins": {
-      "$uid": { ".read": "auth != null && auth.uid === $uid" }
-    },
-
-    "reservas": {
-      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
-      ".indexOn": ["dataExata"],
-      "$id": {
-        ".write": "(auth != null && root.child('admins').child(auth.uid).val() === true) || (!data.exists() && newData.exists())",
-        ".validate": "newData.hasChildren(['dataExata','hora','blocos','servicoNome','preco','clienteNome','clienteTelemovel']) && ((auth != null && root.child('admins').child(auth.uid).val() === true) || (newData.child('estadoPagamento').val() === 'A Pagar no Dia' && newData.child('status').val() === 'ativo' && newData.child('mensagemEnviada').val() === false))",
-        "dataExata": { ".validate": "newData.isString() && newData.val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)" },
-        "hora": { ".validate": "newData.isString() && newData.val().matches(/^\\d{2}:\\d{2}$/)" },
-        "blocos": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 24" },
-        "preco": { ".validate": "newData.isNumber() && newData.val() >= 0" },
-        "clienteNome": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80" },
-        "clienteTelemovel": { ".validate": "newData.isString() && newData.val().length <= 20" },
-        "clienteEmail": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "clienteNif": { ".validate": "newData.isString() && newData.val().length <= 20" },
-        "servicoNome": { ".validate": "newData.isString() && newData.val().length <= 120" }
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
       }
     },
-
+    "staff": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && root.child('admins').child(auth.uid).val() === true || (auth != null && auth.uid === $uid && !data.exists() && auth.token.email_verified === true && newData.child('id').val() === root.child('convites').child(auth.token.email.toLowerCase().replace('.', ',')).val())"
+      }
+    },
+    "convites": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$email": {
+        ".read": "auth != null && auth.token.email != null && $email === auth.token.email.toLowerCase().replace('.', ',')"
+      }
+    },
+    "reservas": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true || ((auth != null && root.child('staff').child(auth.uid).child('id').val() != null) && query.orderByChild === 'prof' && query.equalTo === root.child('staff').child(auth.uid).child('id').val())",
+      ".indexOn": [
+        "dataExata",
+        "prof"
+      ],
+      "$id": {
+        ".write": "auth != null && root.child('admins').child(auth.uid).val() === true || (!data.exists() && newData.exists()) || ((auth != null && root.child('staff').child(auth.uid).child('id').val() != null) && (!data.exists() || data.child('prof').val() === root.child('staff').child(auth.uid).child('id').val()) && (!newData.exists() || newData.child('prof').val() === root.child('staff').child(auth.uid).child('id').val()))",
+        ".validate": "auth != null && root.child('admins').child(auth.uid).val() === true || ((auth != null && root.child('staff').child(auth.uid).child('id').val() != null) && newData.child('prof').val() === root.child('staff').child(auth.uid).child('id').val()) || (newData.hasChildren(['dataExata','hora','blocos','servicoNome','preco','clienteNome','clienteTelemovel']) && newData.child('estadoPagamento').val() === 'A Pagar no Dia' && newData.child('status').val() === 'ativo' && newData.child('mensagemEnviada').val() === false)",
+        "dataExata": {
+          ".validate": "newData.isString() && newData.val().matches(/^\\d{4}-\\d{2}-\\d{2}$/)"
+        },
+        "hora": {
+          ".validate": "newData.isString() && newData.val().matches(/^\\d{2}:\\d{2}$/)"
+        },
+        "blocos": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 24"
+        },
+        "preco": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "prof": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "clienteNome": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+        },
+        "clienteTelemovel": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "clienteEmail": {
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        },
+        "clienteNif": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "servicoNome": {
+          ".validate": "newData.isString() && newData.val().length <= 120"
+        }
+      }
+    },
     "ocupacao": {
       ".read": true,
       ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
       "$dia": {
-        "$hora": {
-          ".write": "(auth != null && root.child('admins').child(auth.uid).val() === true) || (!data.exists() && newData.isString() && newData.parent().parent().parent().child('reservas').child(newData.val()).exists())"
+        "$a": {
+          ".write": "((auth != null && root.child('staff').child(auth.uid).child('id').val() != null) && $a === root.child('staff').child(auth.uid).child('id').val()) || (!data.exists() && newData.isString() && newData.parent().parent().parent().child('reservas').child(newData.val()).exists())",
+          "$h": {
+            ".write": "!data.exists() && newData.isString() && newData.parent().parent().parent().parent().child('reservas').child(newData.val()).exists()"
+          }
         }
       }
     },
-
-    "precos":     { ".read": true, ".write": "auth != null && root.child('admins').child(auth.uid).val() === true" },
-    "bloqueios":  { ".read": true, ".write": "auth != null && root.child('admins').child(auth.uid).val() === true" },
-    "config":     { ".read": true, ".write": "auth != null && root.child('admins').child(auth.uid).val() === true" },
-    "notificacoes": { ".read": "auth != null && root.child('admins').child(auth.uid).val() === true", ".write": false }
+    "precos": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "bloqueios": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$id": {
+        ".write": "(auth != null && root.child('staff').child(auth.uid).child('id').val() != null) && (!data.exists() || data.child('prof').val() === root.child('staff').child(auth.uid).child('id').val()) && (!newData.exists() || newData.child('prof').val() === root.child('staff').child(auth.uid).child('id').val())"
+      }
+    },
+    "config": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "notificacoes": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": false
+    }
   }
 }

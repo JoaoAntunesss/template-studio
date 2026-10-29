@@ -10,14 +10,23 @@
   const hm = s => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
   const fmtH = t => String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
 
-  // Todas as horas possíveis da semana (da abertura mais cedo ao fecho mais tarde)
+  // ---------- Equipa (opcional) ----------
+  // Sem L.equipa (ou lista vazia) = salão de uma pessoa: tudo funciona como antes.
+  const EQUIPA = (L.equipa || []).filter(p => p && p.id);
+  const MODO_EQUIPA = EQUIPA.length > 0;
+  const prof = id => EQUIPA.find(p => p.id === id) || null;
+  const horarioDe = p => (p && p.horario) || L.agenda.horario;
+  const fazServico = (p, nome) => !p.servicos || p.servicos.includes('*') || p.servicos.includes(nome);
+
+  // Todas as horas possíveis da semana (da abertura mais cedo ao fecho mais tarde, de todos)
   let mn = 24 * 60, mx = 0;
-  Object.values(L.agenda.horario).forEach(r => (r || []).forEach(([a, b]) => { mn = Math.min(mn, hm(a)); mx = Math.max(mx, hm(b)); }));
+  [L.agenda.horario, ...EQUIPA.map(p => p.horario).filter(Boolean)].forEach(H => Object.values(H).forEach(r => (r || []).forEach(([a, b]) => { mn = Math.min(mn, hm(a)); mx = Math.max(mx, hm(b)); })));
   const HORAS = [];
   for (let t = mn; t + INT <= mx; t += INT) HORAS.push(fmtH(t));
 
-  function aberto(date, hora) {
-    const r = L.agenda.horario[DIAS[date.getDay()]];
+  // aberto(data, hora) = horário do salão; aberto(data, hora, idProfissional) = horário dessa pessoa
+  function aberto(date, hora, pid) {
+    const r = horarioDe(pid ? prof(pid) : null)[DIAS[date.getDay()]];
     if (!r) return false;
     const t = hm(hora);
     return r.some(([a, b]) => t >= hm(a) && t + INT <= hm(b));
@@ -40,6 +49,17 @@
     for (let k = 0; k < (r.blocos || 1); k++) if (HORAS[i + k]) out.push(HORAS[i + k]);
     return out;
   }
+
+  // Ocupação pública: ocupacao/dia/hora (uma pessoa) ou ocupacao/dia/idProfissional/hora (equipa)
+  const ocupadoEm = (oc, di, h, pid) => { const d = oc && oc[di]; if (!d) return false; return MODO_EQUIPA ? !!(d[pid] && d[pid][h]) : !!d[h]; };
+  const chaveOcup = (di, h, pid) => MODO_EQUIPA ? `ocupacao/${di}/${pid}/${h}` : `ocupacao/${di}/${h}`;
+  // Bloqueios: sem "prof" = salão inteiro; com "prof" = só essa pessoa (férias, folga)
+  function mapaBloqueios(lista) {
+    const m = {};
+    lista.forEach(b => { const k = b.hora === 'Todas' ? b.data : b.data + '-' + b.hora; m[b.prof ? k + '|' + b.prof : k] = b.motivo || 'Fechado'; });
+    return m;
+  }
+  const bloqueado = (m, di, h, pid) => m[di] || m[di + '-' + h] || (pid && (m[di + '|' + pid] || m[di + '-' + h + '|' + pid])) || null;
 
   // ---------- Aspeto (cores e fontes a partir de loja.js) ----------
   function aplicarTema(painel) {
@@ -113,6 +133,8 @@
         set(v) { escrever(p, v); guardar(); return Promise.resolve(); },
         update(o) { Object.keys(o).forEach(k => escrever(p ? p + '/' + k : k, o[k])); guardar(); return Promise.resolve(); },
         remove() { escrever(p, null); guardar(); return Promise.resolve(); },
+        orderByChild(k) { return { equalTo: v => { const f = sn => ({ key: sn.key, val: () => { const o = sn.val() || {}, r = {}; Object.keys(o).forEach(id => { if (o[id] && o[id][k] === v) r[id] = o[id]; }); return Object.keys(r).length ? r : null; } });
+          return { on(e, cb) { ouvintes.push({ p, cb: sn => cb(f(sn)) }); setTimeout(() => cb(f(snap(p))), 0); }, once() { return Promise.resolve(f(snap(p))); } }; } }; },
         push(v) { const r = ref((p ? p + '/' : '') + novaChave()); const pr = v === undefined ? Promise.resolve() : r.set(v); r.then = pr.then.bind(pr); r.catch = pr.catch.bind(pr); return r; }
       };
     }
@@ -123,7 +145,8 @@
     const set = u => { user = u; cbs.forEach(c => c(u)); return Promise.resolve({ user: u }); };
     return {
       onAuthStateChanged(cb) { cbs.push(cb); setTimeout(() => cb(user), 0); },
-      signInWithEmailAndPassword: () => set({ uid: 'demo', email: 'demo@exemplo.pt' }),
+      // No modo demo, entrar com o email "ana@exemplo.pt" (qualquer palavra-passe) entra como a colaboradora "ana"
+      signInWithEmailAndPassword: (e) => { const id = String(e || '').split('@')[0]; return set(prof(id) ? { uid: 'demo-' + id, email: id + '@exemplo.pt' } : { uid: 'demo', email: 'demo@exemplo.pt' }); },
       signInWithPopup: () => set({ uid: 'demo', email: 'demo@exemplo.pt' }),
       signOut: () => set(null)
     };
@@ -145,8 +168,9 @@
         const s = L.servicos[Math.floor(rnd() * L.servicos.length)], bl = blocosDe(s);
         const h = livres[Math.floor(rnd() * livres.length)];
         const r = { hora: h, blocos: bl };
-        const sl = slotsDe(r), di = iso(d);
-        if (sl.length < bl || sl.some(x => !aberto(d, x) || (ocupacao[di] && ocupacao[di][x]))) continue;
+        const sl = slotsDe(r), di = iso(d), pid = MODO_EQUIPA ? EQUIPA[Math.floor(rnd() * EQUIPA.length)].id : null;
+        if (pid && !fazServico(prof(pid), s.nome)) continue;
+        if (sl.length < bl || sl.some(x => !aberto(d, x, pid) || ocupadoEm(ocupacao, di, x, pid))) continue;
         const ci = Math.floor(rnd() * nomes.length), id = 'demo' + String(n++).padStart(4, '0');
         const passado = dd < 0, vou = L.vouchers.ativo && rnd() < 0.06;
         Object.assign(r, {
@@ -157,18 +181,22 @@
           status: passado && rnd() < 0.05 ? 'noshow' : 'ativo', dataRegisto: new Date().toISOString(), mensagemEnviada: passado || rnd() < 0.5
         });
         if (r.estadoPagamento === 'Voucher Pago') r.precoLimpo = Math.round(s.preco * 0.7 * 2) / 2;
+        if (pid) r.prof = pid;
         reservas[id] = r;
-        sl.forEach(x => { (ocupacao[di] = ocupacao[di] || {})[x] = id; });
+        sl.forEach(x => { const o = (ocupacao[di] = ocupacao[di] || {}); if (pid) (o[pid] = o[pid] || {})[x] = id; else o[x] = id; });
       }
     }
     return {
       reservas, ocupacao, precos: {}, bloqueios: {},
+      admins: { demo: true },
+      staff: Object.fromEntries(EQUIPA.map(p => ['demo-' + p.id, { id: p.id, email: p.id + '@exemplo.pt' }])),
+      convites: Object.fromEntries(EQUIPA.map(p => [(p.id + '@exemplo,pt'), p.id])),
       config: { noticiasBarra: L.noticiaInicial || '', campanha: { texto: '🌸 Campanha de Primavera', desconto: 10, servicoAlvo: L.servicos[0].nome } }
     };
   }
 
   window.APP = {
-    L, DEMO, HORAS, INT, DIAS_NOME, MESES,
+    L, DEMO, HORAS, INT, DIAS_NOME, MESES, EQUIPA, MODO_EQUIPA, prof, fazServico, ocupadoEm, chaveOcup, mapaBloqueios, bloqueado,
     aberto, blocosDe, iso, isoParaData, visual, segunda, esc, eur, duracao, tpl, telInt, telValido, slotsDe, aplicarTema, iniciar,
     get db() { return _db; }, get auth() { return _auth; }
   };

@@ -105,6 +105,10 @@ window.LOJA = {
   // Vouchers de plataformas (ex.: Odisseias). ativo:false esconde tudo.
   vouchers: { ativo: true, nome: "Odisseias" },
 
+  // ---------- Equipa ----------
+  // Salão de uma pessoa: deixe a lista vazia. Com equipa: veja exemplos/loja-equipa.js
+  equipa: [],
+
   // ---------- Painel ----------
   admin: { nome: "Aurora", titulo: "Área da Aurora 👑" },
 

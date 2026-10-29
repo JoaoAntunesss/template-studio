@@ -47,3 +47,31 @@ Cria conta no EmailJS, um serviço e um template (variáveis: `cliente_nome, ser
 
 ## Migrar uma loja antiga (ex.: dados do site da Xana)
 Importa o JSON antigo para a nova base de dados (Consola → Realtime Database → ⋮ → Importar), cria `admins/<UID>` e no painel carrega em **Manutenção → Reconstruir ocupação**. Os estados "Odisseias"/"Odisseias Pago" antigos são reconhecidos.
+
+## Salões com equipa (várias profissionais)
+O mesmo template serve para os dois casos:
+- **Uma pessoa:** em `loja.js`, `equipa: []`. Tudo funciona como até aqui.
+- **Equipa:** copie `exemplos/loja-equipa.js` para `public/loja.js` e preencha `equipa`. Cada pessoa tem:
+  - `id` e `nome`;
+  - `cargo` (o que aparece por baixo do nome no site);
+  - `foto` (quadrada, em `img/equipa/`);
+  - `cor` (a cor dela na agenda do painel);
+  - `servicos` (os serviços que faz, ou `["*"]` para todos);
+  - `horario` (opcional; sem ele, usa o horário do salão).
+
+O que muda com equipa:
+- **No site:**
+  - Há uma secção "A nossa equipa", com as fotos.
+  - Na marcação aparece o passo "Com quem": a cliente escolhe a pessoa ou "Qualquer uma", e nesse caso fica com a primeira livre.
+  - Cada pessoa só aparece nos serviços que faz e tem a sua própria agenda.
+- **Painel da dona:**
+  - A agenda mostra todas as pessoas (cada uma com a sua cor) ou uma de cada vez.
+  - A tabela "Por colaboradora" mostra as marcações, as faltas e a faturação de cada uma no mês.
+  - Na marcação manual e nos bloqueios escolhe-se a pessoa (por exemplo, para as férias de uma colaboradora).
+- **Acessos da equipa:** a dona escreve o email Google de cada colaboradora.
+  - Quando a colaboradora entra no painel com esse email, vê **só a sua agenda e as suas marcações**: marcações manuais, WhatsApp, pago ou falta, e as suas férias.
+  - Não vê a faturação, os clientes das colegas, os preços nem as campanhas.
+  - Isto é garantido pelas regras da base de dados (`database.rules.json`), não só pelo ecrã.
+- **WhatsApp:** os avisos e o resumo diário passam a dizer com quem é cada marcação.
+
+Para experimentar em modo demonstração, use `exemplos/loja-equipa.js` como `loja.js`. No painel, carregue em "Entrar" para ver como a dona, ou escreva `rita@exemplo.pt` no email para ver como a colaboradora Rita.

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcações online</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#b07a8c">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="loja.js"></script>
+    <script src="core.js"></script>
+    <style>
+        :root { --bg-color: #fbf9f7; --text-color: #2f2a33; --accent-color: #b07a8c; --accent-dark: #8a5a6b; --white: #ffffff; --booked-bg: #ebe6e8; --booked-text: #968f92; --rest-bg: #f9f1f1; --rest-text: #c28282; --border: #efe8ea; --font-title: 'Playfair Display', serif; --font-text: 'Lato', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+        body { font-family: var(--font-text); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2, h3 { font-family: var(--font-title); font-weight: 400; }
+
+        #demo-bar { display: none; background: #2f2a33; color: #fff; text-align: center; font-size: .8rem; padding: 6px 12px; }
+        #demo-bar a { color: #ffd9e4; }
+        #campanha-banner { display: none; background-color: var(--accent-dark); color: var(--white); text-align: center; padding: 12px; font-weight: bold; letter-spacing: 1px; font-size: 0.95rem; text-transform: uppercase; }
+        #noticias-bar { display: none; background-color: var(--text-color); color: var(--accent-color); overflow: hidden; white-space: nowrap; padding: 10px 0; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px; border-bottom: 1px solid var(--accent-dark); }
+        #noticias-bar span { display: inline-block; padding-left: 100%; animation: deslizarNoticias 25s linear infinite; }
+        @keyframes deslizarNoticias { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; background-color: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .logo-link { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 65px; width: auto; object-fit: contain; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        .hero { position: relative; height: 60vh; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); }
+        .hero::before { content: ''; position: absolute; inset: 0; background: rgba(40, 30, 35, 0.45); }
+        .hero-content { position: relative; z-index: 1; padding: 0 1rem; }
+        .hero-content h1 { font-size: 3rem; letter-spacing: 2px; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        .hero-cta { display: inline-block; margin-top: 1.2rem; background: var(--accent-color); color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; font-size: .85rem; font-weight: bold; }
+
+        .servicos-section, .galeria-section, .localizacao-section { max-width: 1100px; margin: 4rem auto; padding: 0 1.5rem; }
+        .servicos-section h2, .galeria-section h2, .localizacao-section h2 { font-size: 2.3rem; text-align: center; margin-bottom: 2.5rem; }
+        .categoria-bloco { background: var(--white); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .categoria-bloco h3 { font-size: 1.3rem; color: var(--accent-dark); margin-bottom: 1.2rem; border-bottom: 2px solid var(--border); padding-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .servico-item-real { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); gap: 10px; }
+        .servico-item-real:last-child { border-bottom: none; }
+        .servico-nome { font-weight: bold; font-size: 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .servico-tempo { font-size: 0.8rem; color: #777; margin-top: 3px; display: block; }
+        .servico-direita { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .badge-promocao { background-color: var(--accent-dark); color: var(--white); font-size: 0.65rem; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 0.5px; }
+        .preco-container { display: flex; flex-direction: column; align-items: flex-end; }
+        .preco-antigo { text-decoration: line-through; color: #999; font-size: 0.8rem; font-family: var(--font-title); }
+        .servico-preco { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); font-family: var(--font-title); }
+        .btn-reservar-servico { background: var(--accent-color); color: var(--white); border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn-reservar-servico:hover { background: var(--accent-dark); }
+
+        .carrossel-wrapper { position: relative; display: flex; align-items: center; max-width: 950px; margin: 0 auto; }
+        .carrossel-container { display: flex; gap: 15px; overflow-x: auto; scroll-behavior: smooth; width: 100%; padding: 10px 5px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .carrossel-container::-webkit-scrollbar { display: none; }
+        .galeria-item { flex: 0 0 calc(33.333% - 10px); scroll-snap-align: start; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); aspect-ratio: 1 / 1; border: 1px solid var(--border); background: var(--white); }
+        .galeria-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+        .galeria-item:hover img { transform: scale(1.05); }
+        .btn-carrossel { background: var(--white); color: var(--accent-dark); border: 2px solid var(--accent-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; position: absolute; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-carrossel:hover { background: var(--accent-color); color: var(--white); }
+        .btn-prev { left: -20px; } .btn-next { right: -20px; }
+
+        .localizacao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; background: var(--white); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); }
+        .localizacao-info h3 { color: var(--accent-color); margin-bottom: 1rem; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 2px; }
+        .localizacao-info p { margin-bottom: 1.2rem; font-size: 1.05rem; }
+        .link-destaque, .social-link { color: var(--accent-color); text-decoration: none; font-weight: bold; }
+        .localizacao-foto img { width: 100%; border-radius: 8px; border: 2px solid var(--border); object-fit: cover; }
+        .horario-lista { font-size: .9rem; color: #666; }
+        .horario-lista div { display: flex; justify-content: space-between; border-bottom: 1px dotted var(--border); padding: 2px 0; }
+
+        .agenda-section { max-width: 1200px; margin: 4rem auto; padding: 0 1.5rem; text-align: center; }
+        .agenda-section h2 { font-size: 2.3rem; margin-bottom: 1rem; }
+        .calendario-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .calendario-header h3 { font-size: 1.2rem; color: var(--accent-dark); text-transform: uppercase; }
+        .btn-nav-semana { background: var(--white); border: 1px solid var(--accent-color); color: var(--accent-dark); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .btn-nav-semana:hover { background: var(--accent-color); color: var(--white); }
+        .tabela-container { overflow-x: auto; background: var(--white); border-radius: 8px; padding: 1rem; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; min-width: 750px; }
+        th, td { border: 1px solid var(--border); text-align: center; padding: 12px 8px; font-size: 0.85rem; }
+        th { background: var(--white); color: var(--accent-dark); text-transform: uppercase; font-size: 0.75rem; }
+        .coluna-hora { background: var(--bg-color); font-weight: bold; color: var(--accent-dark); width: 70px; }
+        .bloco { cursor: pointer; transition: background 0.2s; }
+        .bloco.livre:hover { background: var(--bg-color); color: var(--accent-dark); font-weight: bold; }
+        .bloco.reservado { background: var(--booked-bg); color: var(--booked-text); cursor: not-allowed; }
+        .bloco.descanso { background: var(--rest-bg); color: var(--rest-text); cursor: not-allowed; font-weight: bold; }
+        .bloco.passado { background: #f5f5f5; color: #ccc; cursor: not-allowed; }
+
+        footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #888; border-top: 1px solid var(--border); margin-top: 3rem; }
+        .admin-link { text-decoration: none; color: inherit; opacity: 0.5; }
+        .admin-link:hover { opacity: 1; color: var(--accent-dark); }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: var(--white); padding: 1.5rem; border-radius: 12px; width: 100%; max-width: 480px; text-align: center; max-height: 90vh; overflow-y: auto; }
+        .modal-content h3 { font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-dark); }
+        .modal-content input, .modal-content select { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 0.95rem; }
+        .payment-box { background: var(--bg-color); padding: 10px; border-radius: 6px; margin: 8px 0; border: 1px dashed var(--accent-color); text-align: left; font-size: 0.85rem; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn { padding: 10px; border: none; border-radius: 6px; cursor: pointer; flex: 1; text-transform: uppercase; font-weight: bold; font-size: 0.9rem; }
+        .btn-cancelar { background: #eee; }
+        .btn-confirmar { background: var(--accent-color); color: var(--white); }
+        .btn:disabled { opacity: .6; cursor: wait; }
+
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background: #25d366; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 900; transition: transform 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        #pwa-install-banner { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: var(--text-color); color: #fcfcfb; padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 9999; border: 2px solid var(--accent-color); text-align: center; }
+        #pwa-install-banner h4 { font-family: var(--font-title); color: var(--accent-color); font-size: 1.1rem; margin-bottom: 6px; }
+        #pwa-install-banner p { font-size: 0.85rem; color: #ddd; margin-bottom: 12px; line-height: 1.4; }
+        .pwa-btn-group { display: flex; gap: 10px; justify-content: center; }
+        .pwa-btn-instalar { background: var(--accent-color); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; }
+        .pwa-btn-fechar { background: transparent; color: #aaa; border: 1px solid #666; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero { height: 45vh; }
+            .servicos-section h2, .agenda-section h2, .galeria-section h2, .localizacao-section h2 { font-size: 1.8rem; }
+            .servico-item-real { flex-direction: column; align-items: flex-start; }
+            .servico-direita { width: 100%; justify-content: space-between; }
+            .calendario-header { flex-direction: column; align-items: stretch; }
+            .btn-nav-semana { width: 100%; }
+            .whatsapp-float { width: 50px; height: 50px; bottom: 20px; right: 16px; }
+            .galeria-item { flex: 0 0 75%; }
+            .btn-carrossel { display: none; }
+            .localizacao-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="demo-bar">Modo demonstração — loja e clientes fictícios. As marcações ficam só neste navegador. <a href="admin.html">Ver o painel →</a></div>
+    <div id="noticias-bar"><span id="noticias-texto"></span></div>
+    <div id="campanha-banner"></div>
+
+    <nav class="navbar">
+        <a href="#" class="logo-link"><img id="logo" class="logo-img" alt=""></a>
+        <ul class="nav-links">
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#trabalhos">Trabalhos</a></li>
+            <li><a href="#localizacao">Localização</a></li>
+            <li><a href="#agendar">Agendar</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 id="hero-titulo"></h1>
+            <p id="hero-sub"></p>
+            <a href="#agendar" class="hero-cta">Marcar agora</a>
+        </div>
+    </section>
+
+    <section id="servicos" class="servicos-section">
+        <h2>Serviços</h2>
+        <div id="container-categorias-servicos"></div>
+    </section>
+
+    <section id="trabalhos" class="galeria-section">
+        <h2>O Nosso Trabalho</h2>
+        <div class="carrossel-wrapper">
+            <button class="btn-carrossel btn-prev" data-dir="-1" aria-label="Anterior">&#10094;</button>
+            <div class="carrossel-container" id="carrosselTrabalhos"></div>
+            <button class="btn-carrossel btn-next" data-dir="1" aria-label="Seguinte">&#10095;</button>
+        </div>
+    </section>
+
+    <section id="localizacao" class="localizacao-section">
+        <h2>Onde nos Encontrar</h2>
+        <div class="localizacao-grid">
+            <div class="localizacao-info">
+                <h3>Morada & Contacto</h3>
+                <p><a id="morada" target="_blank" rel="noopener" class="link-destaque"></a></p>
+                <p style="font-size: 1.1rem;">Telemóvel: <strong id="telefone" style="color: var(--accent-dark);"></strong></p>
+                <p id="redes"></p>
+                <div class="horario-lista" id="horario-lista"></div>
+            </div>
+            <div class="localizacao-foto"><img id="foto-loja" alt="" loading="lazy"></div>
+        </div>
+    </section>
+
+    <section id="agendar" class="agenda-section">
+        <h2>Agenda Online</h2>
+        <div class="calendario-header">
+            <button class="btn-nav-semana" data-sem="-1">&#8592; Semana Anterior</button>
+            <h3 id="mes-ano-texto"></h3>
+            <button class="btn-nav-semana" data-sem="1">Próxima Semana &#8594;</button>
+        </div>
+        <div class="tabela-container">
+            <table><thead><tr id="agenda-thead-tr"></tr></thead><tbody id="agenda-body"></tbody></table>
+        </div>
+    </section>
+
+    <footer>
+        &copy; <span id="ano-footer"></span> <span class="nome-loja"></span>. Todos os direitos reservados.
+        <a href="admin.html" class="admin-link" id="admin-link"></a>
+        <div style="font-size: 0.75rem; color: #aaa; margin-top: 8px;" id="creditos"></div>
+    </footer>
+
+    <a id="wa-float" class="whatsapp-float" target="_blank" rel="noopener" title="Falar no WhatsApp">
+        <svg viewBox="0 0 32 32" style="width:32px;height:32px;fill:#fff"><path d="M16 2.5C8.5 2.5 2.5 8.5 2.5 16c0 2.4.6 4.7 1.8 6.7L2.5 29.5l7-1.8c2 .1 4.2 1.8 6.5 1.8 7.5 0 13.5-6 13.5-13.5S23.5 2.5 16 2.5zm0 24.5c-2 0-4-.5-5.8-1.5l-.4-.2-4.3 1.1 1.1-4.2-.3-.5c-1.1-1.8-1.7-3.9-1.7-6.2 0-6.4 5.2-11.5 11.5-11.5S27.5 9.6 27.5 16 22.4 27 16 27zm6.3-8.6c-.3-.2-2-.1-2.3-.9-.1-.1-.1-.3-.2-.4-.2-.3-.6-.4-.8-.3-.2.1-1 .9-1.200 1.1-.1.2-.3.2-.6.1-1.4-.6-2.5-1.5-3.5-2.8-.2-.2-.2-.5 0-.7.1-.1.2-.2.3-.4.1-.1.1-.3 0-.4s-.9-2.300-1.1-2.8c-.2-.4-.4-.3-.6-.3h-.5c-.2 0-.5.1-.7.3-.8.8-1.1 1.8-1.1 2.9 0 1.6.8 3.2 2 4.4 2.2 2.3 5.3 3.6 8.5 4.1.3 0 .7.1 1 .1 1.3 0 2.5-.5 3.300-1.4.3-.4.4-.9.3-1.3-.2-.1-.5-.2-.9-.4z"/></svg>
+    </a>
+
+    <div id="pwa-install-banner">
+        <h4 class="nome-loja"></h4>
+        <p id="pwa-texto-instrucao">Instale a nossa aplicação no telemóvel para um acesso mais rápido às suas marcações!</p>
+        <div class="pwa-btn-group">
+            <button class="pwa-btn-instalar" id="btn-instalar-pwa" style="display:none;">Instalar App</button>
+            <button class="pwa-btn-fechar" id="btn-fechar-pwa">Mais tarde</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content" style="max-width: 420px;">
+            <h3 style="color: #5cb85c; font-size: 1.8rem; margin-bottom: 5px;">✅ Marcado com Sucesso!</h3>
+            <p style="font-size: 0.9rem; color:#555;">O seu agendamento foi registado na agenda.</p>
+            <div class="payment-box" style="margin-top: 15px; text-align: center;">
+                <p id="successInfo" style="font-weight: bold; color: var(--accent-dark);"></p>
+                <p style="font-size: 0.8rem; color:#666; margin-top: 5px;">Aguardamos a sua visita!</p>
+            </div>
+            <a id="btnGoogleCalendar" href="#" target="_blank" rel="noopener" style="display:block; background:#4285F4; color:#fff; padding:12px; border-radius:6px; text-decoration:none; font-weight:bold; text-transform:uppercase; font-size:0.85rem; margin-top:8px;">📅 Adicionar ao Google Calendar</a>
+            <button class="btn btn-cancelar" style="width:100%; margin-top:10px;" data-fechar="successModal">Fechar</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-content">
+            <h3>Confirmar Marcação</h3>
+            <p id="modalInfo" style="color:#666; margin-bottom:10px; font-size:0.9rem;"></p>
+            <input type="text" id="clienteNome" placeholder="O seu nome completo" maxlength="80" autocomplete="name">
+            <input type="tel" id="clienteTelemovel" placeholder="Telemóvel / WhatsApp (obrigatório)" maxlength="20" autocomplete="tel">
+            <input type="email" id="clienteEmail" placeholder="O seu email (opcional)" maxlength="120" autocomplete="email">
+            <input type="text" id="clienteNif" placeholder="NIF (para fatura, opcional)" maxlength="12">
+            <select id="servicoSelecionado"></select>
+            <select id="metodoPagamento" style="margin-top: 8px;"></select>
+            <div class="payment-box">
+                <strong>Resumo do Valor:</strong><br>
+                <span>Total a pagar: <strong id="modalPrecoTotal" style="color:var(--accent-dark)">0.00€</strong></span>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-cancelar" data-fechar="bookingModal">Cancelar</button>
+                <button class="btn btn-confirmar" id="btnConfirmar">Agendar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+(function () {
+    const A = APP, L = A.L, $ = id => document.getElementById(id);
+    A.aplicarTema(false);
+
+    // ---------- Conteúdo a partir de loja.js ----------
+    document.title = `${L.nome} | ${L.slogan}`;
+    document.querySelectorAll('.nome-loja').forEach(e => e.textContent = L.nome);
+    $('logo').src = L.logo; $('logo').alt = L.nome;
+    $('hero').style.backgroundImage = `url('${L.hero.imagem}')`;
+    $('hero-titulo').textContent = L.hero.titulo; $('hero-sub').textContent = L.hero.subtitulo;
+    $('morada').href = L.mapa; $('morada').innerHTML = '📍 ' + L.morada.map(A.esc).join('<br>');
+    $('telefone').textContent = L.telefone.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');
+    $('redes').innerHTML = L.redes.map(r => `<a href="${A.esc(r.url)}" target="_blank" rel="noopener" class="social-link">${A.esc(r.nome)}</a>`).join(' | ');
+    $('foto-loja').src = L.fotoLoja; $('foto-loja').alt = 'Entrada do ' + L.nome;
+    $('carrosselTrabalhos').innerHTML = L.galeria.map(g => `<div class="galeria-item"><img src="${A.esc(g.src)}" alt="${A.esc(g.alt)}" loading="lazy"></div>`).join('');
+    $('wa-float').href = 'https://wa.me/' + A.telInt(L.telefone);
+    $('metodoPagamento').innerHTML = L.pagamentos.map(p => `<option>${A.esc(p)}</option>`).join('');
+    if (!L.pedirNif) $('clienteNif').style.display = 'none';
+    $('admin-link').textContent = '🔒 ' + L.admin.nome;
+    $('ano-footer').textContent = new Date().getFullYear();
+    $('creditos').innerHTML = L.creditos ? `${A.esc(L.creditos.texto)}${L.creditos.email ? ` — <a href="mailto:${A.esc(L.creditos.email)}" style="color:inherit;text-decoration:none">${A.esc(L.creditos.email)}</a>` : ''}` : '';
+    const ordemDias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'], nomesDias = { seg: 'Segunda', ter: 'Terça', qua: 'Quarta', qui: 'Quinta', sex: 'Sexta', sab: 'Sábado', dom: 'Domingo' };
+    $('horario-lista').innerHTML = ordemDias.map(d => { const r = L.agenda.horario[d]; return `<div><span>${nomesDias[d]}</span><span>${r ? r.map(x => x.join('–')).join(' · ') : 'Fechado'}</span></div>`; }).join('');
+    if (A.DEMO) $('demo-bar').style.display = 'block';
+
+    document.querySelectorAll('.btn-carrossel').forEach(b => b.onclick = () => {
+        const c = $('carrosselTrabalhos'), it = c.querySelector('.galeria-item'); if (!it) return;
+        c.scrollBy({ left: +b.dataset.dir * (it.offsetWidth + 15) * 3, behavior: 'smooth' });
+    });
+    document.querySelectorAll('[data-fechar]').forEach(b => b.onclick = () => $(b.dataset.fechar).style.display = 'none');
+
+    // ---------- Estado ----------
+    let precosDB = {}, ocupacao = {}, bloqueiosMapa = {}, campanha = { texto: '', desconto: 0, servicoAlvo: 'Todos' };
+    let semana = A.segunda(new Date());
+
+    function precoFinal(s) {
+        const base = precosDB[s.nome] !== undefined ? precosDB[s.nome] : s.preco;
+        const aplica = campanha.desconto > 0 && (!campanha.servicoAlvo || campanha.servicoAlvo === 'Todos' || campanha.servicoAlvo === s.nome);
+        return aplica ? { final: base * (1 - campanha.desconto / 100), original: base, desc: true } : { final: base, original: base, desc: false };
+    }
+
+    function renderServicos() {
+        const cats = {};
+        L.servicos.forEach((s, i) => (cats[s.cat] = cats[s.cat] || []).push({ s, i, p: precoFinal(s) }));
+        $('container-categorias-servicos').innerHTML = Object.keys(cats).map(cat => `<div class="categoria-bloco"><h3>${A.esc(cat)}</h3>${cats[cat].map(({ s, i, p }) => `
+            <div class="servico-item-real">
+                <div><span class="servico-nome">${A.esc(s.nome)} ${p.desc ? `<span class="badge-promocao">-${campanha.desconto}% PROMO</span>` : ''}</span><span class="servico-tempo">${A.duracao(A.blocosDe(s) * A.INT)}</span></div>
+                <div class="servico-direita">${p.desc ? `<div class="preco-container"><span class="preco-antigo">${A.eur(p.original)}</span><span class="servico-preco">${A.eur(p.final)}</span></div>` : `<span class="servico-preco">${A.eur(p.final)}</span>`}
+                <button class="btn-reservar-servico" data-serv="${i}">Reservar</button></div>
+            </div>`).join('')}</div>`).join('');
+        const sel = $('servicoSelecionado'), atual = sel.value;
+        sel.innerHTML = L.servicos.map((s, i) => `<option value="${i}">${A.esc(s.nome)} — ${A.eur(precoFinal(s).final)}</option>`).join('');
+        if (atual) sel.value = atual;
+        atualizarPrecoModal();
+    }
+    $('container-categorias-servicos').addEventListener('click', e => {
+        const b = e.target.closest('[data-serv]'); if (!b) return;
+        $('servicoSelecionado').value = b.dataset.serv; atualizarPrecoModal();
+        $('agendar').scrollIntoView({ behavior: 'smooth' });
+    });
+    function atualizarPrecoModal() { const s = L.servicos[$('servicoSelecionado').value]; if (s) $('modalPrecoTotal').textContent = A.eur(precoFinal(s).final); }
+    $('servicoSelecionado').onchange = atualizarPrecoModal;
+
+    // ---------- Agenda pública (só vê "ocupado", nunca dados de clientes) ----------
+    const ocupado = (dIso, h) => !!(ocupacao[dIso] && ocupacao[dIso][h]);
+    const ehInicio = (dIso, h) => { const i = A.HORAS.indexOf(h); const id = ocupacao[dIso] && ocupacao[dIso][h]; return i === 0 || !id || ocupacao[dIso][A.HORAS[i - 1]] !== id; };
+
+    function renderAgenda() {
+        $('mes-ano-texto').textContent = `${A.MESES[semana.getMonth()]} ${semana.getFullYear()}`;
+        const dias = [...Array(7)].map((_, i) => { const d = new Date(semana); d.setDate(d.getDate() + i); return d; });
+        $('agenda-thead-tr').innerHTML = '<th class="coluna-hora">Hora</th>' + dias.map(d => `<th>${A.DIAS_NOME[d.getDay()]}<br><small style="font-size:0.7rem;color:#888">${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}</small></th>`).join('');
+        const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+        const agoraMin = new Date().getHours() * 60 + new Date().getMinutes();
+        $('agenda-body').innerHTML = A.HORAS.map(h => `<tr><td class="coluna-hora">${h}</td>${dias.map(d => {
+            const di = A.iso(d), mot = bloqueiosMapa[di] || bloqueiosMapa[di + '-' + h];
+            const [hh, mm] = h.split(':').map(Number);
+            if (d < hoje || (+d === +hoje && hh * 60 + mm <= agoraMin)) return '<td class="bloco passado">-</td>';
+            if (!A.aberto(d, h)) return '<td class="bloco descanso">Fechado</td>';
+            if (mot) return `<td class="bloco descanso">${A.esc(mot)}</td>`;
+            if (ocupado(di, h)) return `<td class="bloco reservado">${ehInicio(di, h) ? 'Reservado' : '↓'}</td>`;
+            return `<td class="bloco livre" data-dia="${di}" data-hora="${h}">Livre</td>`;
+        }).join('')}</tr>`).join('');
+    }
+    document.querySelectorAll('[data-sem]').forEach(b => b.onclick = () => { semana.setDate(semana.getDate() + 7 * b.dataset.sem); renderAgenda(); });
+    $('agenda-body').addEventListener('click', e => { const td = e.target.closest('td.livre'); if (td) abrirModal(td.dataset.dia, td.dataset.hora); });
+
+    let cel = {};
+    function abrirModal(dIso, hora) {
+        cel = { dIso, hora };
+        const d = A.isoParaData(dIso);
+        $('modalInfo').textContent = `${A.DIAS_NOME[d.getDay()]}, ${A.visual(dIso)} às ${hora}`;
+        ['clienteNome', 'clienteEmail', 'clienteTelemovel', 'clienteNif'].forEach(id => $(id).value = '');
+        $('bookingModal').style.display = 'flex';
+    }
+
+    function linkCalendar(nome, dIso, hora, blocos) {
+        const ini = A.isoParaData(dIso); const [h, m] = hora.split(':').map(Number); ini.setHours(h, m, 0, 0);
+        const fim = new Date(ini.getTime() + blocos * A.INT * 60000);
+        const f = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Marcação: ' + nome)}&dates=${f(ini)}/${f(fim)}&details=${encodeURIComponent('Marcação confirmada no ' + L.nome + '.')}&location=${encodeURIComponent(L.nome + ', ' + L.morada.join(', '))}`;
+    }
+
+    $('btnConfirmar').onclick = async () => {
+        const nome = $('clienteNome').value.trim(), tel = $('clienteTelemovel').value.trim(), email = $('clienteEmail').value.trim();
+        const nif = $('clienteNif').value.trim() || 'Consumidor Final', pagamento = $('metodoPagamento').value;
+        const s = L.servicos[$('servicoSelecionado').value], blocos = A.blocosDe(s), preco = Math.round(precoFinal(s).final * 100) / 100;
+        if (!nome || !A.telValido(tel)) { alert('Por favor, preencha o nome e um telemóvel válido.'); return; }
+        const d = A.isoParaData(cel.dIso), i = A.HORAS.indexOf(cel.hora), slots = [];
+        for (let k = 0; k < blocos; k++) {
+            const h = A.HORAS[i + k];
+            if (!h || !A.aberto(d, h) || ocupado(cel.dIso, h) || bloqueiosMapa[cel.dIso] || bloqueiosMapa[cel.dIso + '-' + h]) { alert('Atenção: não há tempo suficiente nesse horário para este serviço. Escolha outra hora.'); return; }
+            slots.push(h);
+        }
+        const btn = $('btnConfirmar'); btn.disabled = true;
+        const id = A.db.ref('reservas').push().key;
+        const up = {};
+        up['reservas/' + id] = {
+            dataExata: cel.dIso, diaTextoVisual: A.visual(cel.dIso), hora: cel.hora, hIndex: i, blocos, servicoNome: s.nome, preco,
+            clienteNome: nome, clienteEmail: email || 'N/A', clienteTelemovel: tel, clienteNif: nif, pagamento,
+            estadoPagamento: 'A Pagar no Dia', status: 'ativo', dataRegisto: new Date().toISOString(), mensagemEnviada: false
+        };
+        // Escrita atómica: se outra pessoa marcou o mesmo horário entretanto, as regras recusam tudo.
+        slots.forEach(h => up[`ocupacao/${cel.dIso}/${h}`] = id);
+        try { await A.db.ref().update(up); }
+        catch (e) { btn.disabled = false; alert('Esse horário acabou de ser ocupado. Por favor escolha outro.'); return; }
+        btn.disabled = false;
+        if (email && L.emailjs.publicKey && window.emailjs) {
+            emailjs.send(L.emailjs.servico, L.emailjs.template, { cliente_nome: nome, cliente_email: email, servico_nome: s.nome, dia: A.visual(cel.dIso), hora: cel.hora, preco: A.eur(preco), pagamento, loja: L.nome }).catch(() => {});
+        }
+        $('bookingModal').style.display = 'none';
+        $('successInfo').textContent = `${s.nome} no dia ${A.visual(cel.dIso)} às ${cel.hora}`;
+        $('btnGoogleCalendar').href = linkCalendar(s.nome, cel.dIso, cel.hora, blocos);
+        $('successModal').style.display = 'flex';
+    };
+
+    // ---------- Arranque ----------
+    renderServicos(); renderAgenda();
+    A.iniciar(false).then(() => {
+        const db = A.db;
+        db.ref('precos').on('value', s => { precosDB = {}; const v = s.val() || {}; Object.keys(v).forEach(k => precosDB[decodeURIComponent(k)] = v[k]); renderServicos(); });
+        db.ref('ocupacao').on('value', s => { ocupacao = s.val() || {}; renderAgenda(); });
+        db.ref('bloqueios').on('value', s => {
+            bloqueiosMapa = {}; const v = s.val() || {};
+            Object.values(v).forEach(b => { if (b.hora === 'Todas') bloqueiosMapa[b.data] = b.motivo; else bloqueiosMapa[b.data + '-' + b.hora] = b.motivo; });
+            renderAgenda();
+        });
+        db.ref('config/campanha').on('value', s => {
+            campanha = s.val() || { texto: '', desconto: 0, servicoAlvo: 'Todos' };
+            const b = $('campanha-banner');
+            if (campanha.texto && campanha.texto.trim()) {
+                let t = campanha.texto;
+                if (campanha.desconto > 0) t += ` (${campanha.desconto}% de desconto ${!campanha.servicoAlvo || campanha.servicoAlvo === 'Todos' ? 'em todos os serviços' : 'no serviço ' + campanha.servicoAlvo}!)`;
+                b.textContent = t; b.style.display = 'block';
+            } else b.style.display = 'none';
+            renderServicos();
+        });
+        db.ref('config/noticiasBarra').on('value', s => { const m = s.val(); $('noticias-texto').textContent = m || ''; $('noticias-bar').style.display = m && m.trim() ? 'block' : 'none'; });
+    }).catch(() => alert('Não foi possível ligar à agenda. Verifique a ligação à internet.'));
+
+    if (L.emailjs.publicKey) {
+        const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js';
+        s.onload = () => emailjs.init({ publicKey: L.emailjs.publicKey }); document.head.appendChild(s);
+    }
+
+    // ---------- PWA ----------
+    if ('serviceWorker' in navigator && location.protocol === 'https:' && !A.DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
+    let deferred; const banner = $('pwa-install-banner');
+    const fechado = () => { try { return sessionStorage.getItem('pwaClosed'); } catch (e) { return null; } };
+    window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!fechado()) { banner.style.display = 'block'; $('btn-instalar-pwa').style.display = 'inline-block'; } });
+    const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = navigator.standalone;
+    if (iOS && !standalone && !fechado()) setTimeout(() => { $('pwa-texto-instrucao').innerHTML = "Para instalar no iPhone: toque em <b>Partilhar</b> e escolha <b>'Adicionar ao ecrã principal'</b>."; banner.style.display = 'block'; }, 2000);
+    $('btn-instalar-pwa').onclick = () => { if (deferred) { deferred.prompt(); deferred = null; banner.style.display = 'none'; } };
+    $('btn-fechar-pwa').onclick = () => { banner.style.display = 'none'; try { sessionStorage.setItem('pwaClosed', '1'); } catch (e) {} };
+})();
+</script>
+</body>
+</html>

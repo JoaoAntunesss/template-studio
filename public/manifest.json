@@ -1,0 +1,17 @@
+{
+  "name": "Studio Aurora",
+  "short_name": "Aurora",
+  "description": "Estúdio de beleza e estética — marcações online",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf9f7",
+  "theme_color": "#b07a8c",
+  "icons": [
+    {
+      "src": "img/icone.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

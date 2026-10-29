@@ -13,6 +13,7 @@ window.LOJA = {
 
   // ---------- Aspeto ----------
   logo: "img/logo.svg",
+  logoClaro: "img/logo-claro.svg",            // opcional: versão branca do logo para o topo (sem ela, o logo vai numa pastilha branca)
   icone: "img/icone.svg",                    // ícone da app (quadrado)
   cores: {
     fundo: "#fbf9f7",
@@ -25,8 +26,8 @@ window.LOJA = {
 
   hero: {
     imagem: "img/hero.svg",
-    titulo: "A sua beleza começa aqui",
-    subtitulo: "O cuidado certo para o seu bem-estar"
+    titulo: "A sua beleza começa *aqui*",          // *palavra* fica em itálico de destaque
+    subtitulo: "Marque online em segundos e receba a confirmação no WhatsApp."
   },
   noticiaInicial: "✨ Bem-vindo ao Studio Aurora! Consulte os nossos serviços e faça já a sua marcação online.",
 
@@ -49,6 +50,18 @@ window.LOJA = {
     { src: "img/g5.svg", alt: "Limpeza de pele" },
     { src: "img/g6.svg", alt: "Verniz gel" }
   ],
+  // Descrição curta opcional por serviço: acrescente  desc: "..."  a cada serviço.
+
+  // ---------- Avaliações (copie as REAIS do Google; nunca invente) ----------
+  // nota/total: null para esconder o cartão. lista: [] para esconder a secção.
+  avaliacoes: {
+    nota: 4.9, total: 120, link: "https://www.google.com/maps",
+    lista: [
+      { texto: "Espaço lindo e muito acolhedor. As unhas duram imenso!", nome: "Avaliação de exemplo" },
+      { texto: "Marquei pelo site em dois minutos e recebi logo a confirmação.", nome: "Avaliação de exemplo" },
+      { texto: "Profissional, atenciosa e pontual. Recomendo.", nome: "Avaliação de exemplo" }
+    ]
+  },
 
   // ---------- Agenda ----------
   agenda: {
@@ -68,22 +81,22 @@ window.LOJA = {
 
   // ---------- Serviços (min = duração em minutos) ----------
   servicos: [
-    { cat: "Estética", nome: "Lifting de pestanas", min: 90, preco: 25 },
-    { cat: "Estética", nome: "Brow lamination", min: 90, preco: 25 },
-    { cat: "Estética", nome: "Maquilhagem social", min: 90, preco: 35 },
-    { cat: "Estética", nome: "Combo lifting + brow lamination", min: 120, preco: 40 },
-    { cat: "Manicure e Pedicure", nome: "Manicure", min: 60, preco: 8 },
-    { cat: "Manicure e Pedicure", nome: "Verniz gel", min: 90, preco: 12 },
-    { cat: "Manicure e Pedicure", nome: "Unhas de gel (aplicação)", min: 120, preco: 25 },
-    { cat: "Manicure e Pedicure", nome: "Unhas de gel (manutenção)", min: 90, preco: 18 },
-    { cat: "Manicure e Pedicure", nome: "Spa de pés", min: 60, preco: 15 },
-    { cat: "Massagens", nome: "Massagem de relaxamento", min: 60, preco: 30 },
-    { cat: "Massagens", nome: "Massagem de pedras quentes", min: 60, preco: 38 },
-    { cat: "Massagens", nome: "Drenagem linfática", min: 60, preco: 25 },
-    { cat: "Tratamentos Faciais", nome: "Limpeza de pele profunda", min: 90, preco: 30 },
-    { cat: "Depilação", nome: "Depilação buço", min: 30, preco: 3 },
-    { cat: "Depilação", nome: "Depilação sobrancelhas", min: 30, preco: 7 },
-    { cat: "Depilação", nome: "Depilação perna completa", min: 60, preco: 15 }
+    { cat: "Estética", nome: "Lifting de pestanas", desc: "Olhar aberto sem extensões", min: 90, preco: 25 },
+    { cat: "Estética", nome: "Brow lamination", desc: "Sobrancelhas definidas e alinhadas", min: 90, preco: 25 },
+    { cat: "Estética", nome: "Maquilhagem social", desc: "Para eventos e ocasiões especiais", min: 90, preco: 35 },
+    { cat: "Estética", nome: "Combo lifting + brow lamination", desc: "Pestanas e sobrancelhas numa só visita", min: 120, preco: 40 },
+    { cat: "Manicure e Pedicure", nome: "Manicure", desc: "Unhas cuidadas e verniz clássico", min: 60, preco: 8 },
+    { cat: "Manicure e Pedicure", nome: "Verniz gel", desc: "Brilho que dura até três semanas", min: 90, preco: 12 },
+    { cat: "Manicure e Pedicure", nome: "Unhas de gel (aplicação)", desc: "Alongamento com acabamento natural", min: 120, preco: 25 },
+    { cat: "Manicure e Pedicure", nome: "Unhas de gel (manutenção)", desc: "Preenchimento e novo acabamento", min: 90, preco: 18 },
+    { cat: "Manicure e Pedicure", nome: "Spa de pés", desc: "Esfoliação, hidratação e verniz", min: 60, preco: 15 },
+    { cat: "Massagens", nome: "Massagem de relaxamento", desc: "Óleos essenciais e música calma", min: 60, preco: 30 },
+    { cat: "Massagens", nome: "Massagem de pedras quentes", desc: "Calor que solta a tensão", min: 60, preco: 38 },
+    { cat: "Massagens", nome: "Drenagem linfática", desc: "Pernas leves, menos retenção", min: 60, preco: 25 },
+    { cat: "Tratamentos Faciais", nome: "Limpeza de pele profunda", desc: "Pele limpa, luminosa e hidratada", min: 90, preco: 30 },
+    { cat: "Depilação", nome: "Depilação buço", desc: "Rápida e com cera suave", min: 30, preco: 3 },
+    { cat: "Depilação", nome: "Depilação sobrancelhas", desc: "Desenho a acompanhar o rosto", min: 30, preco: 7 },
+    { cat: "Depilação", nome: "Depilação perna completa", desc: "Cera morna, pele macia", min: 60, preco: 15 }
   ],
 
   pagamentos: ["💳 MB Way", "🏧 Multibanco", "💶 Numerário (no local)"],

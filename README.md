@@ -8,7 +8,7 @@ Cada loja é configurada num só ficheiro: [`public/loja.js`](public/loja.js).
 
 *Imagens da loja de demonstração "Studio Aurora" (dados fictícios).*
 
-- **Site:** serviços com duração e preço, campanhas, galeria, contactos, agenda com horários livres em tempo real, PWA.
+- **Site:** design moderno e animado, próxima vaga em tempo real, serviços em cartões por categoria, marcação em 3 passos (serviço → dia → hora), galeria com zoom, avaliações do Google, PWA.
 - **Painel:** faturação, gráficos, clientes (CRM), agenda semanal, marcações manuais com repetição, vouchers, preços, bloqueios, notícias.
 - **WhatsApp:** aviso a cada nova marcação e resumo diário (Cloud Functions + CallMeBot).
 - **Segurança:** login Firebase Auth, dados das clientes privados, agenda pública só com horas ocupadas.

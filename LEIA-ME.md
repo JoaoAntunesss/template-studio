@@ -75,3 +75,6 @@ O que muda com equipa:
 - **WhatsApp:** os avisos e o resumo diário passam a dizer com quem é cada marcação.
 
 Para experimentar em modo demonstração, use `exemplos/loja-equipa.js` como `loja.js`. No painel, carregue em "Entrar" para ver como a dona, ou escreva `rita@exemplo.pt` no email para ver como a colaboradora Rita.
+
+## Suporte do cliente
+Ao entregar um site, preenche `suporteUrl` em `public/loja.js` com `https://joaoantunesss.github.io/aw/#suporte?site=NOME-DO-SITE`. No painel aparece "Precisa de ajuda? Pedir suporte" e o pedido chega ao teu painel de Gestão. O mesmo nome tem de estar no campo "Nome do site" da ficha do cliente.

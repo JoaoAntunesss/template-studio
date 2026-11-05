@@ -1,6 +1,6 @@
 # Template — Site de marcações para salões / estéticas
 
-Site público + painel de gestão + avisos por WhatsApp, tudo num só projeto Firebase por cliente.
+Site público + painel de gestão + avisos no Telegram, tudo num só projeto Firebase por cliente.
 **Para cada loja nova só se muda `public/loja.js` e as imagens em `public/img/`.**
 
 ## Ver a demonstração (sem Firebase)
@@ -22,13 +22,14 @@ Abre http://localhost:8000 (site) e http://localhost:8000/admin.html (painel, cl
 7. `firebase deploy --only hosting,database`
 8. Domínio próprio: Hosting → Adicionar domínio personalizado.
 
-### Avisos por WhatsApp (opcional — precisa do plano Blaze, na prática 0 €)
-1. A dona ativa o CallMeBot no WhatsApp dela e recebe a chave.
-2. `cp functions/.env.example functions/.env` e põe o telemóvel dela.
-3. `firebase functions:secrets:set CALLMEBOT_KEY` (cola a chave — fica fora do site público).
-4. `cd functions && npm install && cd .. && firebase deploy --only functions`
-
-Passa a receber: aviso a cada marcação feita no site + resumo diário (hora em `loja.js > resumoDiario`).
+### Avisos no Telegram (opcional — precisa do plano Blaze, na prática 0 €)
+A dona recebe no telemóvel um aviso a cada marcação e o resumo diário.
+1. No Telegram, a dona procura **@BotFather**, envia `/newbot`, escolhe um nome e um utilizador terminado em `bot`. Recebe um **token**.
+2. Abre o bot novo, carrega em **Iniciar** e envia "olá".
+3. No browser: `https://api.telegram.org/bot` + token + `/getUpdates`. O número a seguir a `"chat":{"id":` é o **chat id**.
+4. No VS Code (cada comando separado, no PowerShell não se usa `&&`): `firebase functions:secrets:set TELEGRAM_TOKEN` (cola o token) e `firebase functions:secrets:set TELEGRAM_CHAT` (cola o chat id).
+5. `cd functions`, `npm install`, `cd ..`, `firebase deploy --only functions` (se perguntar quantos dias guardar imagens, responde `1`). Se pedir, ativa a API Secret Manager no link que o erro mostrar.
+6. Para testar, faz uma marcação no site. Chega a mensagem ao Telegram.
 
 ### Email de confirmação à cliente (opcional)
 Cria conta no EmailJS, um serviço e um template (variáveis: `cliente_nome, servico_nome, dia, hora, preco, pagamento, loja`), e preenche `loja.js > emailjs`. No EmailJS, restringe os domínios autorizados ao domínio da loja.
@@ -42,7 +43,7 @@ Cria conta no EmailJS, um serviço e um template (variáveis: `cliente_nome, ser
 - Painel protegido por **Firebase Auth** + lista `admins` nas regras — não há palavra-passe no código.
 - Os dados das clientes (`reservas`) **só são lidos pela dona**. O site público só vê `ocupacao` (que horas estão ocupadas, sem nomes).
 - O público só pode **criar** marcações (não altera nem apaga), com validação de campos; a reserva de horário é atómica, por isso duas pessoas não conseguem marcar a mesma hora.
-- A chave do CallMeBot fica num segredo das Functions; não há funções públicas abertas.
+- O token do Telegram fica num segredo das Functions; não há funções públicas abertas.
 - Os textos das clientes são escapados antes de aparecer no painel.
 
 ## Migrar uma loja antiga (ex.: dados do site da Xana)

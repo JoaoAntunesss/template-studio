@@ -1,29 +1,29 @@
 /**
  * Cloud Functions (precisam do plano Blaze do Firebase — normalmente 0€/mês com este uso).
- * - avisoNovaMarcacao: quando entra uma marcação pelo site, avisa a dona no WhatsApp (CallMeBot).
+ * - avisoNovaMarcacao: quando entra uma marcação pelo site, avisa a dona no Telegram.
  * - resumoDiario: todos os dias à hora definida em loja.js, envia o resumo do dia e de amanhã.
  * - resumoAgora: o mesmo resumo a pedido (só para administradores autenticados).
- * A chave do CallMeBot fica guardada como segredo:  firebase functions:secrets:set CALLMEBOT_KEY
+ * O token do bot e o chat da dona ficam como segredos:  firebase functions:secrets:set TELEGRAM_TOKEN  e  TELEGRAM_CHAT
  */
 const { onValueCreated } = require("firebase-functions/v2/database");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
-const { defineSecret, defineString } = require("firebase-functions/params");
+const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const LOJA = require("./loja.json");
 
 admin.initializeApp();
-const CALLMEBOT_KEY = defineSecret("CALLMEBOT_KEY");
-const DONO_TELEFONE = defineString("DONO_TELEFONE");
+const TELEGRAM_TOKEN = defineSecret("TELEGRAM_TOKEN");
+const TELEGRAM_CHAT = defineSecret("TELEGRAM_CHAT");
 
-async function whatsapp(texto) {
-  const tel = String(DONO_TELEFONE.value() || "").replace(/\D/g, "");
-  const key = CALLMEBOT_KEY.value();
-  if (!tel || !key) return;
-  const num = tel.length === 9 ? LOJA.indicativo + tel : tel;
-  const url = `https://api.callmebot.com/whatsapp.php?phone=%2B${num}&text=${encodeURIComponent(texto)}&apikey=${encodeURIComponent(key)}`;
-  const r = await fetch(url);
-  if (!r.ok) console.error("CallMeBot falhou", r.status);
+async function whatsapp(texto) { // mantém o nome por compatibilidade; envia para o Telegram da dona
+  const token = TELEGRAM_TOKEN.value(), chat = TELEGRAM_CHAT.value();
+  if (!token || !chat) return;
+  const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chat, text: texto, disable_web_page_preview: true }),
+  });
+  if (!r.ok) console.error("Telegram falhou", r.status);
 }
 
 const nomeProf = (id) => (LOJA.equipa && LOJA.equipa[id]) || id || "";
@@ -35,7 +35,7 @@ function isoNoFuso(d) {
 }
 
 exports.avisoNovaMarcacao = onValueCreated(
-  { ref: "/reservas/{id}", region: LOJA.regiaoBD, secrets: [CALLMEBOT_KEY] },
+  { ref: "/reservas/{id}", region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] },
   async (event) => {
     const r = event.data.val();
     if (!r || r.pagamento === "Manual") return; // as manuais foram feitas pela própria dona
@@ -73,11 +73,11 @@ async function montarResumo() {
 
 const [hh, mm] = (LOJA.resumoDiario || "19:30").split(":");
 exports.resumoDiario = onSchedule(
-  { schedule: `${+mm} ${+hh} * * *`, timeZone: LOJA.fuso, region: LOJA.regiaoBD, secrets: [CALLMEBOT_KEY] },
+  { schedule: `${+mm} ${+hh} * * *`, timeZone: LOJA.fuso, region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] },
   async () => { await whatsapp(await montarResumo()); }
 );
 
-exports.resumoAgora = onCall({ region: LOJA.regiaoBD, secrets: [CALLMEBOT_KEY] }, async (req) => {
+exports.resumoAgora = onCall({ region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] }, async (req) => {
   if (!req.auth) throw new HttpsError("unauthenticated", "Sem sessão.");
   const ok = (await admin.database().ref(`admins/${req.auth.uid}`).once("value")).val() === true;
   if (!ok) throw new HttpsError("permission-denied", "Sem permissão.");

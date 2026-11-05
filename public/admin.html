@@ -391,6 +391,7 @@
     $('painel-titulo').textContent = `Painel de Gestão ${L.nome} 👑`;
     document.querySelectorAll('.nome-loja').forEach(e => e.textContent = L.nome);
     $('ano-footer').textContent = new Date().getFullYear();
+    if (L.suporteUrl) { const c = $('creditos'); c.insertAdjacentHTML('beforebegin', `<div style="margin-top:8px"><a href="${esc(L.suporteUrl)}" target="_blank" rel="noopener" style="color:inherit">Precisa de ajuda? Pedir suporte</a></div>`); }
     $('creditos').innerHTML = L.creditos ? `${esc(L.creditos.texto)}${L.creditos.email ? ` — <a href="mailto:${esc(L.creditos.email)}" style="color:inherit;text-decoration:none">${esc(L.creditos.email)}</a>` : ''}` : '';
     const VN = L.vouchers.nome || 'Voucher';
     $('lbl-voucher').textContent = `🎁 É um voucher ${VN}?`;

@@ -16,7 +16,7 @@ admin.initializeApp();
 const TELEGRAM_TOKEN = defineSecret("TELEGRAM_TOKEN");
 const TELEGRAM_CHAT = defineSecret("TELEGRAM_CHAT");
 
-async function whatsapp(texto) { // mantém o nome por compatibilidade; envia para o Telegram da dona
+async function avisar(texto) { // envia para o Telegram da dona
   const token = TELEGRAM_TOKEN.value(), chat = TELEGRAM_CHAT.value();
   if (!token || !chat) return;
   const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -44,7 +44,7 @@ exports.avisoNovaMarcacao = onValueCreated(
       texto: `Nova marcação de ${r.clienteNome} (${r.servicoNome} - ${eur(r.preco)}) para ${r.diaTextoVisual} às ${r.hora}`,
       data: new Date().toISOString(),
     });
-    await whatsapp(texto);
+    await avisar(texto);
   }
 );
 
@@ -74,7 +74,7 @@ async function montarResumo() {
 const [hh, mm] = (LOJA.resumoDiario || "19:30").split(":");
 exports.resumoDiario = onSchedule(
   { schedule: `${+mm} ${+hh} * * *`, timeZone: LOJA.fuso, region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] },
-  async () => { await whatsapp(await montarResumo()); }
+  async () => { await avisar(await montarResumo()); }
 );
 
 exports.resumoAgora = onCall({ region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] }, async (req) => {
@@ -82,6 +82,6 @@ exports.resumoAgora = onCall({ region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, 
   const ok = (await admin.database().ref(`admins/${req.auth.uid}`).once("value")).val() === true;
   if (!ok) throw new HttpsError("permission-denied", "Sem permissão.");
   const t = await montarResumo();
-  await whatsapp(t);
+  await avisar(t);
   return { enviado: true };
 });

@@ -22,7 +22,8 @@ window.LOJA = {
     destaqueEscuro: "#8a5a6b",               // títulos, banners
     painelFundo: "#f6f2f4"
   },
-  fontes: { titulo: "Playfair Display", texto: "Lato" },   // Google Fonts
+  fontes: { titulo: "Playfair Display", texto: "Lato" },   // fontes guardadas no site (RGPD: não envia o IP à Google)
+  fontesLocais: ["Playfair Display", "Lato"],   // se mudares as fontes, para outra que não esteja aqui, o site volta a pedir à Google Fonts
 
   hero: {
     imagem: "img/hero.svg",
@@ -122,6 +123,10 @@ window.LOJA = {
   // ---------- Serviços externos ----------
   // EmailJS (email de confirmação à cliente). Deixa "" para desligar.
   // A public key do EmailJS é pública por natureza: restringe o domínio no painel do EmailJS.
+  // ---------- RGPD (página privacidade.html e aviso na marcação) ----------
+  // Preenche com os dados de quem é responsável pelo negócio. O que ficar vazio não aparece.
+  rgpd: { responsavel: "", nif: "", morada: "", email: "", retencao: "até 2 anos após a última marcação", prestador: "João Antunes (AW)" },
+
   emailjs: { publicKey: "", servico: "", template: "" },
 
   // Firebase do cliente (Consola Firebase > Definições do projeto > A tua app Web).

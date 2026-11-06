@@ -142,8 +142,8 @@ window.LOJA = {
   fuso: "Europe/Lisbon",
   resumoDiario: "19:30",                     // hora do resumo WhatsApp para a dona
 
-  // Ligação "Pedir suporte" no painel do cliente. Deixa vazio nos exemplos; ao entregar um site:
-  // "https://joaoantunesss.github.io/aw/#suporte?site=NOME-DO-SITE"
-  suporteUrl: "",
+  // Ligação "Pedir suporte" no painel do cliente. O botão aparece sempre.
+  // já vem preenchido; ao entregar um site junta o nome: "https://joaoantunesss.github.io/aw/#suporte?site=NOME-DO-SITE"
+  suporteUrl: "https://joaoantunesss.github.io/aw/#suporte",
   creditos: { texto: "Licença atribuída a João Antunes", email: "j.p.r.n.antunes@gmail.com" }
 };

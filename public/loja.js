@@ -140,7 +140,7 @@ window.LOJA = {
   },
   regiaoBD: "europe-west1",                  // região da Realtime Database (para as Functions)
   fuso: "Europe/Lisbon",
-  resumoDiario: "19:30",                     // hora do resumo WhatsApp para a dona
+  resumoDiario: "19:30",                     // hora do resumo diário no Telegram da dona
 
   // Ligação "Pedir suporte" no painel do cliente. O botão aparece sempre.
   // já vem preenchido; ao entregar um site junta o nome: "https://joaoantunesss.github.io/aw/#suporte?site=NOME-DO-SITE"

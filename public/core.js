@@ -70,9 +70,11 @@
     s.setProperty('--accent-dark', c.destaqueEscuro);
     s.setProperty('--font-title', `'${L.fontes.titulo}', serif`);
     s.setProperty('--font-text', `'${L.fontes.texto}', sans-serif`);
+    const locais = L.fontesLocais || [];
     const f = document.createElement('link');
     f.rel = 'stylesheet';
-    f.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(L.fontes.titulo) + ':wght@400;600&family=' + encodeURIComponent(L.fontes.texto) + ':wght@300;400;700&display=swap';
+    if (locais.includes(L.fontes.titulo) && locais.includes(L.fontes.texto)) f.href = 'fonts/fonts.css';
+    else f.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(L.fontes.titulo) + ':wght@400;600&family=' + encodeURIComponent(L.fontes.texto) + ':wght@300;400;700&display=swap';
     document.head.appendChild(f);
     const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.content = painel ? c.texto : c.destaque;
   }

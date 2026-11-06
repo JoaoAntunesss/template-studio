@@ -6,8 +6,6 @@
 <title>Marcações online</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#33202a">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="loja.js"></script>
 <script src="core.js"></script>
 <style>
@@ -289,6 +287,7 @@ footer a{text-decoration:none}
 .field label{display:block;font-size:.85rem;font-weight:700;margin-bottom:5px}
 .field input,.field select{width:100%;padding:14px 16px;border-radius:var(--r-sm);border:1.5px solid var(--line);font:inherit;background:var(--paper);color:var(--ink);transition:border-color .2s}
 .field input:focus,.field select:focus{outline:0;border-color:var(--accent-color)}
+.consent label{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;font-weight:400;cursor:pointer}.consent input{margin-top:3px;width:auto}
 .pays{display:flex;flex-wrap:wrap;gap:8px}
 .pays label{flex:1;min-width:120px;cursor:pointer}
 .pays input{position:absolute;opacity:0;pointer-events:none}
@@ -429,6 +428,7 @@ footer a{text-decoration:none}
   <div class="wrap">
     <span>&copy; <span id="ano-footer"></span> <span class="nome-loja"></span></span>
     <span id="creditos"></span>
+    <a href="privacidade.html">Privacidade</a>
     <a href="admin.html" id="admin-link"></a>
   </div>
 </footer>
@@ -454,6 +454,7 @@ footer a{text-decoration:none}
     <div class="field"><label for="clienteEmail">Email <span style="font-weight:400;color:var(--muted)">(opcional)</span></label><input id="clienteEmail" type="email" maxlength="120" autocomplete="email" placeholder="para receber a confirmação"></div>
     <div class="field" id="f-nif"><label for="clienteNif">NIF <span style="font-weight:400;color:var(--muted)">(opcional, para fatura)</span></label><input id="clienteNif" maxlength="12" inputmode="numeric"></div>
     <div class="field"><span style="display:block;font-size:.85rem;font-weight:700;margin-bottom:5px">Pagamento no dia</span><div class="pays" id="pays"></div></div>
+    <div class="field consent"><label><input type="checkbox" id="rgpd"> Li e aceito a <a href="privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</label></div>
     <p class="err" id="bk-err" role="alert"></p>
     <div class="row"><button class="btn btn-soft" data-fechar="bookingModal">Voltar</button><button class="btn btn-main" id="btnConfirmar">Confirmar marcação</button></div>
   </div>
@@ -738,6 +739,7 @@ footer a{text-decoration:none}
     const nif = $('clienteNif').value.trim() || 'Consumidor Final', pag = document.querySelector('input[name=pag]:checked');
     const pagamento = pag ? pag.value : L.pagamentos[0];
     const s = L.servicos[servSel], blocos = A.blocosDe(s), preco = Math.round(precoFinal(s).final * 100) / 100;
+    if (!$('rgpd').checked) { $('bk-err').textContent = 'Para continuar, aceite a política de privacidade.'; $('rgpd').focus(); return; }
     if (!nome) { $('bk-err').textContent = 'Escreva o seu nome.'; $('clienteNome').focus(); return; }
     if (!A.telValido(tel)) { $('bk-err').textContent = 'Escreva um telemóvel com 9 dígitos.'; $('clienteTelemovel').focus(); return; }
     const d = A.isoParaData(cel.dIso), i = A.HORAS.indexOf(cel.hora);
@@ -759,7 +761,7 @@ footer a{text-decoration:none}
     $('bookingModal').classList.remove('on');
     $('successInfo').textContent = `${s.nome}${cel.pid ? ' com ' + A.prof(cel.pid).nome : ''}, ${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })} às ${cel.hora}. Até breve!`;
     $('btnGoogleCalendar').href = linkCalendar(s.nome, cel.dIso, cel.hora, blocos);
-    ['clienteNome', 'clienteTelemovel', 'clienteEmail', 'clienteNif'].forEach(x => $(x).value = '');
+    ['clienteNome', 'clienteTelemovel', 'clienteEmail', 'clienteNif'].forEach(x => $(x).value = ''); $('rgpd').checked = false;
     abrir('successModal'); confetti();
   };
 

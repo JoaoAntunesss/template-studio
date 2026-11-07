@@ -759,7 +759,7 @@ footer a{text-decoration:none}
     try { await A.db.ref().update(up); }
     catch (e) { btn.disabled = false; btn.textContent = 'Confirmar marcação'; $('bk-err').textContent = 'Esta hora acabou de ficar ocupada. Escolha outra.'; return; }
     btn.disabled = false; btn.textContent = 'Confirmar marcação';
-    if (email && L.emailjs.publicKey && window.emailjs) emailjs.send(L.emailjs.servico, L.emailjs.template, { cliente_nome: nome, cliente_email: email, servico_nome: s.nome, dia: A.visual(cel.dIso), hora: cel.hora, preco: A.eur(preco), pagamento, loja: L.nome }).catch(() => {});
+    // Confirmação por email ao cliente: feita no servidor (Cloud Function emailCliente), a partir da conta do salão. Ver functions/index.js.
     $('bookingModal').classList.remove('on');
     $('successInfo').textContent = `${s.nome}${cel.pid ? ' com ' + A.prof(cel.pid).nome : ''}, ${d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })} às ${cel.hora}. Até breve!`;
     $('btnGoogleCalendar').href = linkCalendar(s.nome, cel.dIso, cel.hora, blocos);

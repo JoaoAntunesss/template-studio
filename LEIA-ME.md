@@ -32,7 +32,13 @@ A dona recebe no telemóvel um aviso a cada marcação e o resumo diário.
 6. Para testar, faz uma marcação no site. Chega a mensagem ao Telegram.
 
 ### Email de confirmação à cliente (opcional)
-Cria conta no EmailJS, um serviço e um template (variáveis: `cliente_nome, servico_nome, dia, hora, preco, pagamento, loja`), e preenche `loja.js > emailjs`. No EmailJS, restringe os domínios autorizados ao domínio da loja.
+Quando entra uma marcação pelo site, a cliente recebe um email de confirmação enviado **da conta de email do próprio salão** (serviço, dia, hora, valor). Usa o Gmail do salão com uma *app-password*:
+1. Na conta Google do salão, liga a **verificação em 2 passos**.
+2. Vai a `myaccount.google.com/apppasswords`, cria uma palavra-passe de aplicação e copia as 16 letras.
+3. Define os secrets (no PowerShell, um comando de cada vez): `firebase functions:secrets:set MAIL_USER` (o Gmail do salão) e depois `firebase functions:secrets:set MAIL_PASS` (a app-password).
+4. `firebase deploy --only functions`. Fica ativo a partir da marcação seguinte.
+
+Se não definires `MAIL_USER`/`MAIL_PASS`, o email é simplesmente ignorado — o resto funciona na mesma.
 
 ## Funcionalidades
 **Site:** barra de notícias, banner de campanha com desconto (geral ou por serviço), serviços por categoria com duração e preço, galeria, morada/contactos/horário, agenda semanal com horários livres em tempo real, marcação com nome/telemóvel/email/NIF/pagamento, link para Google Calendar, botão WhatsApp, instalável como app (PWA).

@@ -10,11 +10,16 @@ const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
+const nodemailer = require("nodemailer");
 const LOJA = require("./loja.json");
 
 admin.initializeApp();
 const TELEGRAM_TOKEN = defineSecret("TELEGRAM_TOKEN");
 const TELEGRAM_CHAT = defineSecret("TELEGRAM_CHAT");
+// Email de confirmação ao cliente (opcional): conta de email do próprio salão.
+// Define por salão: firebase functions:secrets:set MAIL_USER e MAIL_PASS (app-password do Gmail).
+const MAIL_USER = defineSecret("MAIL_USER");
+const MAIL_PASS = defineSecret("MAIL_PASS");
 
 async function avisar(texto) { // envia para o Telegram da dona
   const token = TELEGRAM_TOKEN.value(), chat = TELEGRAM_CHAT.value();
@@ -34,8 +39,29 @@ function isoNoFuso(d) {
   return new Intl.DateTimeFormat("en-CA", { timeZone: LOJA.fuso, year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
 }
 
+const escHtml = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Envia ao cliente do salão um email de confirmação. Só corre se o cliente deu email e se MAIL_USER/MAIL_PASS estiverem definidos.
+async function emailCliente(r) {
+  const user = (MAIL_USER.value() || "").trim(), pass = (MAIL_PASS.value() || "").replace(/\s+/g, "");
+  const para = r.clienteEmail;
+  if (!user || !pass || pass === "placeholder" || !para || para === "N/A" || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(para)) return;
+  const linhas = [
+    `Olá ${r.clienteNome || ""},`.trim(),
+    `A sua marcação no ${LOJA.nome} está confirmada.`,
+    `Serviço: ${r.servicoNome}${r.prof ? ` (com ${nomeProf(r.prof)})` : ""}\nData: ${r.diaTextoVisual} às ${r.hora}\nValor: ${eur(r.preco)} (${r.pagamento})`,
+  ];
+  if (LOJA.morada) linhas.push(`Morada: ${Array.isArray(LOJA.morada) ? LOJA.morada.join(", ") : LOJA.morada}`);
+  linhas.push("Se precisar de alterar ou cancelar, é só responder a este email.");
+  const texto = linhas.join("\n\n") + `\n\n${LOJA.nome}`;
+  const html = `<div style="font:16px/1.5 system-ui,Arial,sans-serif;color:#0B1220;max-width:34rem">${linhas.map((l) => `<p>${escHtml(l).replace(/\n/g, "<br>")}</p>`).join("")}<p style="color:#4A5568">${escHtml(LOJA.nome)}</p></div>`;
+  try {
+    const t = nodemailer.createTransport({ service: "gmail", auth: { user, pass } });
+    await t.sendMail({ from: `"${LOJA.nome}" <${user}>`, to: para, replyTo: user, subject: `Confirmação da sua marcação - ${LOJA.nome}`, text: texto, html });
+  } catch (e) { console.error("Email ao cliente falhou", e.message); }
+}
+
 exports.avisoNovaMarcacao = onValueCreated(
-  { ref: "/reservas/{id}", region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT] },
+  { ref: "/reservas/{id}", region: LOJA.regiaoBD, secrets: [TELEGRAM_TOKEN, TELEGRAM_CHAT, MAIL_USER, MAIL_PASS] },
   async (event) => {
     const r = event.data.val();
     if (!r || r.pagamento === "Manual") return; // as manuais foram feitas pela própria dona
@@ -45,6 +71,7 @@ exports.avisoNovaMarcacao = onValueCreated(
       data: new Date().toISOString(),
     });
     await avisar(texto);
+    await emailCliente(r);
   }
 );
 

@@ -157,7 +157,7 @@
             <button id="btn-login">Entrar no Painel</button>
             <button id="btn-google" class="btn-google">Entrar com Google</button>
             <div id="login-erro"></div>
-            <br><a href="index.html" style="color:var(--accent-dark); text-decoration:none; font-size:0.85rem;">← Voltar ao site principal</a>
+            <br><a href="index.html" style="color:var(--accent-dark); text-decoration:none; font-size:0.85rem;"> Voltar ao site principal</a>
         </div>
     </div>
 
@@ -174,7 +174,7 @@
         </div>
 
         <div class="linha-titulo so-dona">
-            <h3 class="sec-titulo" style="margin:0">📊 Resumo Financeiro</h3>
+            <h3 class="sec-titulo" style="margin:0"> Resumo Financeiro</h3>
             <div>
                 <button class="btn-small btn-nav" data-mes="-1">&#8592; Mês Anterior</button>
                 <span id="faturacao-mes-ano-texto" style="margin:0 15px; font-weight:bold; text-transform:uppercase;"></span>
@@ -189,21 +189,21 @@
 
         <div class="agenda-admin-box so-dona">
             <div class="linha-titulo">
-                <h3 class="sec-titulo" style="margin:0">👥 Gestão de Clientes (CRM)</h3>
+                <h3 class="sec-titulo" style="margin:0"> Gestão de Clientes (CRM)</h3>
                 <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                    <input type="text" id="pesquisa-crm" class="search-bar" placeholder="🔍 Pesquisar nome ou tel...">
-                    <button class="btn-small" style="background:#28a745; padding:10px 14px;" id="btn-export">📥 Exportar Lista (Excel)</button>
+                    <input type="text" id="pesquisa-crm" class="search-bar" placeholder=" Pesquisar nome ou tel...">
+                    <button class="btn-small" style="background:#28a745; padding:10px 14px;" id="btn-export"> Exportar Lista (Excel)</button>
                 </div>
             </div>
             <div class="tabela-container-admin">
                 <table class="tabela-admin">
                     <thead><tr>
-                        <th class="th-sortable" data-sort="nome">Nome ↕</th>
-                        <th class="th-sortable" data-sort="tel">Telemóvel ↕</th>
-                        <th class="th-sortable" data-sort="total">Total Marcações ↕</th>
-                        <th class="th-sortable" data-sort="faltas">Faltas ↕</th>
-                        <th class="th-sortable" data-sort="ultima">Última Visita ↕</th>
-                        <th class="th-sortable" data-sort="gasto">Total Gasto ↕</th>
+                        <th class="th-sortable" data-sort="nome">Nome </th>
+                        <th class="th-sortable" data-sort="tel">Telemóvel </th>
+                        <th class="th-sortable" data-sort="total">Total Marcações </th>
+                        <th class="th-sortable" data-sort="faltas">Faltas </th>
+                        <th class="th-sortable" data-sort="ultima">Última Visita </th>
+                        <th class="th-sortable" data-sort="gasto">Total Gasto </th>
                     </tr></thead>
                     <tbody id="lista-clientes-body"></tbody>
                 </table>
@@ -213,7 +213,7 @@
 
         <div class="agenda-admin-box">
             <div class="linha-titulo">
-                <h3 class="sec-titulo" style="margin:0">📅 Visão Geral da Agenda</h3>
+                <h3 class="sec-titulo" style="margin:0"> Visão Geral da Agenda</h3>
                 <div>
                     <select id="agenda-prof" class="so-equipa so-dona" style="width:auto;margin:0 10px 0 0;padding:8px 12px"></select>
                     <button class="btn-small btn-nav" data-sem="-1">&#8592; Semana Anterior</button>
@@ -227,9 +227,9 @@
         </div>
 
         <div class="agenda-admin-box so-equipa so-dona" id="box-equipa">
-            <h3 class="sec-titulo">👩‍💼 Por colaboradora (mês selecionado)</h3>
+            <h3 class="sec-titulo"> Por colaboradora (mês selecionado)</h3>
             <div class="tabela-container-admin" style="margin-top:0"><table class="tabela-admin" style="min-width:520px"><thead><tr><th>Colaboradora</th><th>Marcações</th><th>Faltas</th><th>Faturação</th><th>Acesso ao painel</th></tr></thead><tbody id="equipa-body"></tbody></table></div>
-            <h3 class="sec-titulo" style="margin-top:22px">🔑 Acessos da equipa</h3>
+            <h3 class="sec-titulo" style="margin-top:22px"> Acessos da equipa</h3>
             <p style="font-size:.85rem;color:#666;margin-bottom:10px">Escreva o email (Google) de cada colaboradora. Quando ela entrar no painel com esse email, vê só a agenda e as marcações dela, sem faturação nem definições do salão.</p>
             <div id="acessos"></div>
         </div>
@@ -242,15 +242,15 @@
         <div class="admin-grid">
             <div class="admin-card" style="background:#f0fff4; border:1px solid #25D366; grid-column:1 / -1;">
                 <div class="linha-titulo" style="border-bottom:1px solid #c3e6cb; padding-bottom:8px;">
-                    <h3 style="color:#1ebe5d;">📲 Aguardam Confirmação (WhatsApp)</h3>
-                    <button class="btn-small" style="background:#25D366;" id="btn-todos-enviados">Marcar todos como enviados ✔</button>
+                    <h3 style="color:#1ebe5d;"> Aguardam Confirmação (WhatsApp)</h3>
+                    <button class="btn-small" style="background:#25D366;" id="btn-todos-enviados">Marcar todos como enviados </button>
                 </div>
                 <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Clientes que marcaram e ainda não receberam a mensagem de confirmação (de hoje em diante).</p>
                 <div id="lista-pendentes-whatsapp" style="max-height:250px; overflow-y:auto; background:#fff; border-radius:6px; padding:10px; border:1px solid #e2e8f0;"></div>
             </div>
 
             <div class="admin-card" style="border:1px solid var(--accent-color); grid-column:1 / -1;">
-                <h3 style="color:var(--accent-dark);">➕ Inserir Várias Marcações Manuais</h3>
+                <h3 style="color:var(--accent-dark);"> Inserir Várias Marcações Manuais</h3>
                 <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Preencha a cliente e vá adicionando os serviços à lista. No fim, clique em "Gravar Tudo".</p>
                 <div class="grid-3">
                     <div class="sub-box">
@@ -287,7 +287,7 @@
                             <div><label style="color:var(--accent-dark)">Pagamento</label>
                                 <select id="manual-estado-pagamento" style="border:2px solid var(--accent-color);">
                                     <option value="A Pagar no Dia">⏳ A Pagar no Dia</option>
-                                    <option value="Já Pago">✅ Já Pago (Antecipado)</option>
+                                    <option value="Já Pago">Já Pago (Antecipado)</option>
                                 </select></div>
                         </div>
                         <button class="btn-add" style="background:var(--text-color); font-size:0.8rem;" id="btn-add-lista">+ Adicionar Serviço à Lista</button>
@@ -307,7 +307,7 @@
             </div>
 
             <div class="admin-card so-dona">
-                <h3 style="color:var(--accent-dark);">🏷️ Alterar Preço Fixo</h3>
+                <h3 style="color:var(--accent-dark);"> Alterar Preço Fixo</h3>
                 <label>Serviço a alterar</label>
                 <select id="admin-select-servico"></select>
                 <label>Novo preço base (€)</label>
@@ -319,7 +319,7 @@
             </div>
 
             <div class="admin-card" style="background:#fff8f8; border:1px solid #d9534f;">
-                <h3 style="color:#d9534f;">🛡️ Bloquear Agenda</h3>
+                <h3 style="color:#d9534f;"> Bloquear Agenda</h3>
                 <label>Data a bloquear</label>
                 <input type="date" id="admin-bloqueio-data">
                 <div class="so-equipa so-dona"><label>Quem</label><select id="admin-bloqueio-prof"></select></div>
@@ -331,7 +331,7 @@
             </div>
 
             <div class="admin-card so-dona" style="border:1px solid var(--accent-color);">
-                <h3 style="color:var(--accent-dark);">📢 Barra de Notícias</h3>
+                <h3 style="color:var(--accent-dark);"> Barra de Notícias</h3>
                 <textarea id="admin-noticias-texto" placeholder="Mensagem em destaque no topo do site" rows="3" style="resize:vertical;"></textarea>
                 <div style="display:flex; gap:10px;">
                     <button class="btn-add" style="margin-top:0;" id="btn-noticia">Atualizar</button>
@@ -340,7 +340,7 @@
             </div>
 
             <div class="admin-card so-dona" style="border:1px solid var(--accent-color);">
-                <h3 style="color:var(--accent-dark);">✨ Campanhas & Descontos</h3>
+                <h3 style="color:var(--accent-dark);">Campanhas & Descontos</h3>
                 <input type="text" id="admin-campanha-texto" placeholder="Título da promoção">
                 <select id="admin-campanha-servico"></select>
                 <input type="number" id="admin-desconto-percentual" placeholder="Desconto (%)" min="0" max="100">
@@ -358,14 +358,14 @@
             <div class="admin-card" style="grid-column:1 / -1;">
                 <div class="linha-titulo">
                     <h3 style="color:var(--accent-dark);">Lista de Marcações e Ações</h3>
-                    <input type="text" id="pesquisa-reservas" class="search-bar" placeholder="🔍 Pesquisar nome, serviço, data ou tel...">
+                    <input type="text" id="pesquisa-reservas" class="search-bar" placeholder=" Pesquisar nome, serviço, data ou tel...">
                 </div>
                 <div id="admin-lista-reservas"></div>
                 <div id="paginacao-reservas"></div>
             </div>
 
             <div class="admin-card so-dona" style="grid-column:1 / -1; background:transparent; border:1px dashed #ccc;">
-                <h3 style="color:#888; font-size:1rem;">🔧 Manutenção</h3>
+                <h3 style="color:#888; font-size:1rem;"> Manutenção</h3>
                 <p style="font-size:0.8rem; color:#777; margin-bottom:8px;">Reconstrói a agenda pública (horários ocupados) a partir das marcações. Útil depois de importar dados antigos.</p>
                 <button class="btn-small" style="background:#777;" id="btn-reconstruir">Reconstruir ocupação</button>
             </div>
@@ -388,14 +388,14 @@
     // ---------- Textos a partir de loja.js ----------
     document.title = `Painel ${L.admin.nome} | ${L.nome}`;
     $('login-titulo').textContent = L.admin.titulo;
-    $('painel-titulo').textContent = `Painel de Gestão ${L.nome} 👑`;
+    $('painel-titulo').textContent = `Painel de Gestão ${L.nome} `;
     document.querySelectorAll('.nome-loja').forEach(e => e.textContent = L.nome);
     $('ano-footer').textContent = new Date().getFullYear();
     if (L.suporteUrl) { const c = $('creditos'); c.insertAdjacentHTML('beforebegin', `<div style="margin-top:8px"><a href="${esc(L.suporteUrl)}" target="_blank" rel="noopener" style="color:inherit">Precisa de ajuda? Pedir suporte</a></div>`); }
     $('creditos').innerHTML = L.creditos ? `${esc(L.creditos.texto)}${L.creditos.email ? ` — <a href="mailto:${esc(L.creditos.email)}" style="color:inherit;text-decoration:none">${esc(L.creditos.email)}</a>` : ''}` : '';
     const VN = L.vouchers.nome || 'Voucher';
-    $('lbl-voucher').textContent = `🎁 É um voucher ${VN}?`;
-    $('titulo-vouchers').textContent = `🎁 Vouchers ${VN} Pendentes`;
+    $('lbl-voucher').textContent = ` É um voucher ${VN}?`;
+    $('titulo-vouchers').textContent = ` Vouchers ${VN} Pendentes`;
     if (!L.vouchers.ativo) { $('box-voucher').style.display = 'none'; $('card-vouchers').style.display = 'none'; }
     $('manual-hora').innerHTML = A.HORAS.map(h => `<option>${h}</option>`).join('');
     $('admin-bloqueio-hora').innerHTML = '<option value="Todas">O Dia Todo (Fechado/Férias)</option>' + A.HORAS.map(h => `<option>${h}</option>`).join('');
@@ -455,7 +455,7 @@
             PAPEL = p;
             if (!p.admin) {
                 document.body.classList.add('colaboradora');
-                $('painel-titulo').textContent = `Olá, ${nomeProf(p.prof)} 👋`;
+                $('painel-titulo').textContent = `Olá, ${nomeProf(p.prof)}`;
                 document.querySelector('.admin-header p').textContent = 'A sua agenda e as suas marcações';
             }
             $('login-overlay').style.display = 'none'; $('admin-container').style.display = 'block';
@@ -548,14 +548,14 @@
         const c = $('lista-pendentes-container'), b = $('btn-gravar-tudo');
         if (!listaAInserir.length) { c.innerHTML = '<p class="vazio">Nenhum serviço adicionado ainda.</p>'; b.style.display = 'none'; return; }
         let total = 0;
-        c.innerHTML = listaAInserir.map((it, i) => { total += it.preco; return `<div class="item-pendente"><div><strong>${esc(it.servicoNome)}</strong> ${badgePag(it.estadoPagamento)}${pillProf(it.prof)}<br><small>📅 ${it.diaTextoVisual} às ${it.hora}</small></div><div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:bold;color:var(--accent-dark)">${A.eur(it.preco)}</span><button class="btn-small" data-rm="${i}">X</button></div></div>`; }).join('');
-        b.textContent = `💾 Gravar Tudo na Agenda (${listaAInserir.length} serviços | Valor Base: ${A.eur(total)})`; b.style.display = 'block';
+        c.innerHTML = listaAInserir.map((it, i) => { total += it.preco; return `<div class="item-pendente"><div><strong>${esc(it.servicoNome)}</strong> ${badgePag(it.estadoPagamento)}${pillProf(it.prof)}<br><small> ${it.diaTextoVisual} às ${it.hora}</small></div><div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:bold;color:var(--accent-dark)">${A.eur(it.preco)}</span><button class="btn-small" data-rm="${i}">X</button></div></div>`; }).join('');
+        b.textContent = ` Gravar Tudo na Agenda (${listaAInserir.length} serviços | Valor Base: ${A.eur(total)})`; b.style.display = 'block';
     }
     $('lista-pendentes-container').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { listaAInserir.splice(+b.dataset.rm, 1); renderListaAInserir(); } });
     renderListaAInserir();
 
     // ocupação calculada a partir das reservas (o painel vê tudo)
-    // chave: dia-hora (uma pessoa) ou dia-hora|prof (equipa) → lista de marcações nesse horário
+    // chave: dia-hora (uma pessoa) ou dia-hora|prof (equipa) lista de marcações nesse horário
     function mapaOcupacao() {
         const m = {};
         reservasDB.forEach(r => A.slotsDe(r).forEach((h, k) => { const key = r.dataExata + '-' + h + (TEAM ? '|' + (r.prof || '') : ''); (m[key] = m[key] || []).push({ id: r.id, isMain: k === 0, cliente: r.clienteNome, servico: r.servicoNome, prof: r.prof }); }));
@@ -571,7 +571,7 @@
             const id = A.db.ref('reservas').push().key;
             up['reservas/' + id] = { ...it, clienteNome: nome, clienteEmail: 'N/A', clienteTelemovel: tel, clienteNif: 'N/A', pagamento: 'Manual', status: 'ativo', dataRegisto: new Date().toISOString(), mensagemEnviada: false };
             A.slotsDe(it).forEach(h => { if (oc[it.dataExata + '-' + h + (TEAM ? '|' + it.prof : '')]) conflitos.push(`${it.diaTextoVisual} ${h}`); else up[A.chaveOcup(it.dataExata, h, it.prof)] = id; });
-            msg += `📅 *${it.diaTextoVisual}* às *${it.hora}* | ${it.servicoNome}${it.prof && TEAM ? ' com ' + nomeProf(it.prof) : ''}\n`;
+            msg += ` *${it.diaTextoVisual}* às *${it.hora}* | ${it.servicoNome}${it.prof && TEAM ? ' com ' + nomeProf(it.prof) : ''}\n`;
         });
         if (conflitos.length && !confirm(`Atenção: já existe marcação em ${[...new Set(conflitos)].slice(0, 5).join(', ')}${conflitos.length > 5 ? '…' : ''}.\nGravar mesmo assim (sobreposto)?`)) return;
         msg += '\n' + L.mensagens.despedida;
@@ -591,12 +591,12 @@
     const pendentesWA = () => { const h = A.iso(new Date()); return reservasDB.filter(r => !r.mensagemEnviada && r.dataExata >= h && r.status !== 'noshow'); };
     function renderPendentesWA() {
         const p = pendentesWA(), c = $('lista-pendentes-whatsapp');
-        if (!p.length) { c.innerHTML = '<p class="vazio">Nenhuma cliente a aguardar confirmação! 🎉</p>'; return; }
+        if (!p.length) { c.innerHTML = '<p class="vazio">Nenhuma cliente a aguardar confirmação!</p>'; return; }
         c.innerHTML = p.map(r => `<div class="item-pendente" style="background:#fafafa;border:1px solid #eee;">
-            <div style="line-height:1.4"><strong>${esc(r.clienteNome)}</strong>${pillProf(r.prof)}<br><small>📅 <b>${r.diaTextoVisual}</b> às <b>${r.hora}</b> | ${esc(r.servicoNome)}</small><br><small style="color:#666">📱 ${esc(r.clienteTelemovel)}</small></div>
+            <div style="line-height:1.4"><strong>${esc(r.clienteNome)}</strong>${pillProf(r.prof)}<br><small> <b>${r.diaTextoVisual}</b> às <b>${r.hora}</b> | ${esc(r.servicoNome)}</small><br><small style="color:#666"> ${esc(r.clienteTelemovel)}</small></div>
             <div style="display:flex;align-items:center;gap:8px;">
-                ${A.telValido(r.clienteTelemovel) ? `<button class="btn-small" style="background:#25D366" data-wa="${r.id}">📲 Enviar</button>` : '<span style="color:#d9534f;font-size:0.75rem;font-weight:bold">S/ Tel</span>'}
-                <button class="btn-small" style="background:#999" data-enviado="${r.id}" title="Marcar como enviado">✔</button>
+                ${A.telValido(r.clienteTelemovel) ? `<button class="btn-small" style="background:#25D366" data-wa="${r.id}"> Enviar</button>` : '<span style="color:#d9534f;font-size:0.75rem;font-weight:bold">S/ Tel</span>'}
+                <button class="btn-small" style="background:#999" data-enviado="${r.id}" title="Marcar como enviado"></button>
             </div></div>`).join('');
     }
     function abrirWA(id) {
@@ -650,8 +650,8 @@
             const di = A.iso(d);
             const ocs = pessoas.flatMap(pid => oc[di + '-' + h + (TEAM ? '|' + pid : '')] || []);
             if (ocs.length) {
-                if (!TEAM) { const o = ocs[0]; return `<td class="bloco-admin-reservado" style="${d < hoje ? 'opacity:.6' : ''}">${o.isMain ? `<strong style="color:var(--text-color)">${esc(o.cliente)}</strong><br><small>${esc(o.servico)}</small>` : '↓'}</td>`; }
-                return `<td style="background:#f3eef0;padding:4px;${d < hoje ? 'opacity:.6' : ''}">${ocs.map(o => `<span class="cel-res" style="border-left-color:${corProf(o.prof)}">${o.isMain ? `<b>${esc(o.cliente)}</b><br>${esc(o.servico)}${pessoas.length > 1 ? ' · ' + esc(nomeProf(o.prof)) : ''}` : `↓ ${pessoas.length > 1 ? esc(nomeProf(o.prof)) : ''}`}</span>`).join('')}</td>`;
+                if (!TEAM) { const o = ocs[0]; return `<td class="bloco-admin-reservado" style="${d < hoje ? 'opacity:.6' : ''}">${o.isMain ? `<strong style="color:var(--text-color)">${esc(o.cliente)}</strong><br><small>${esc(o.servico)}</small>` : ''}</td>`; }
+                return `<td style="background:#f3eef0;padding:4px;${d < hoje ? 'opacity:.6' : ''}">${ocs.map(o => `<span class="cel-res" style="border-left-color:${corProf(o.prof)}">${o.isMain ? `<b>${esc(o.cliente)}</b><br>${esc(o.servico)}${pessoas.length > 1 ? ' · ' + esc(nomeProf(o.prof)) : ''}` : ` ${pessoas.length > 1 ? esc(nomeProf(o.prof)) : ''}`}</span>`).join('')}</td>`;
             }
             if (d < hoje) return '<td style="background:#f5f5f5;color:#ccc">-</td>';
             const abertos = pessoas.filter(pid => A.aberto(d, h, pid));
@@ -672,7 +672,7 @@
     function renderBloqueios() {
         const hoje = A.iso(new Date()), lst = bloqueiosDB.filter(b => b.data >= hoje && (PAPEL.admin || !b.prof || b.prof === PAPEL.prof)).sort((a, b) => a.data.localeCompare(b.data));
         $('admin-lista-bloqueios').innerHTML = !lst.length ? '<p class="vazio">Sem dias bloqueados.</p>' :
-            lst.map(b => `<div class="admin-list-item"><span>📅 <strong>${A.visual(b.data)}</strong> (${b.hora === 'Todas' ? 'Dia todo' : 'às ' + b.hora})${b.prof ? pillProf(b.prof) : TEAM ? ' <small>(salão)</small>' : ''}<br><small style="color:#d9534f">${esc(b.motivo)}</small></span>${PAPEL.admin || b.prof === PAPEL.prof ? `<button class="btn-small" data-desbloq="${b.id}">Desbloquear</button>` : ''}</div>`).join('');
+            lst.map(b => `<div class="admin-list-item"><span> <strong>${A.visual(b.data)}</strong> (${b.hora === 'Todas' ? 'Dia todo' : 'às ' + b.hora})${b.prof ? pillProf(b.prof) : TEAM ? ' <small>(salão)</small>' : ''}<br><small style="color:#d9534f">${esc(b.motivo)}</small></span>${PAPEL.admin || b.prof === PAPEL.prof ? `<button class="btn-small" data-desbloq="${b.id}">Desbloquear</button>` : ''}</div>`).join('');
     }
     $('btn-noticia').onclick = () => A.db.ref('config/noticiasBarra').set($('admin-noticias-texto').value.trim()).then(() => alert('Barra atualizada!'));
     $('btn-noticia-off').onclick = () => A.db.ref('config/noticiasBarra').set('').then(() => alert('Barra desativada!'));
@@ -705,7 +705,7 @@
             const rs = reservasDB.filter(r => r.prof === p.id && (r.dataExata || '').startsWith(pref));
             const falt = rs.filter(r => r.status === 'noshow').length;
             const fat = rs.filter(r => r.status !== 'noshow').reduce((a, r) => a + (isVoucher(r.estadoPagamento) ? 0 : isVoucherPago(r.estadoPagamento) ? (parseFloat(r.precoLimpo) || 0) : (r.preco || 0)), 0);
-            return `<tr><td style="text-align:left"><span class="pill-prof" style="background:${corProf(p.id)};margin:0 8px 0 0">&nbsp;</span><b>${esc(p.nome)}</b></td><td>${rs.length - falt}</td><td style="color:${falt ? '#d9534f' : '#5cb85c'};font-weight:bold">${falt}</td><td style="font-weight:bold;color:var(--accent-dark)">${A.eur(fat)}</td><td>${ligadas.has(p.id) ? '✅ Ligada' : Object.values(convitesDB).includes(p.id) ? '⏳ Convite enviado' : '—'}</td></tr>`;
+            return `<tr><td style="text-align:left"><span class="pill-prof" style="background:${corProf(p.id)};margin:0 8px 0 0">&nbsp;</span><b>${esc(p.nome)}</b></td><td>${rs.length - falt}</td><td style="color:${falt ? '#d9534f' : '#5cb85c'};font-weight:bold">${falt}</td><td style="font-weight:bold;color:var(--accent-dark)">${A.eur(fat)}</td><td>${ligadas.has(p.id) ? ' Ligada' : Object.values(convitesDB).includes(p.id) ? '⏳ Convite enviado' : '—'}</td></tr>`;
         }).join('');
     }
     function renderAcessos() {
@@ -781,11 +781,11 @@
             const podePagar = !falta && e !== 'Já Pago' && !isVoucher(e) && !isVoucherPago(e);
             return `<div class="admin-list-item" style="${falta ? 'opacity:0.6;background:#f9f9f9' : ''}">
                 <span><strong>${esc(r.clienteNome)}</strong>${pillProf(r.prof)} — <b style="color:var(--accent-dark)">${A.eur(r.preco)}</b> (${esc(r.pagamento || '-')}) ${badge} ${falta ? '<span style="color:#d9534f;font-weight:bold;margin-left:10px">[FALTOU]</span>' : ''}
-                <br>📅 ${r.diaTextoVisual} às ${r.hora} | <i>${esc(r.servicoNome)}</i>
-                <br><small>📱 ${esc(r.clienteTelemovel)}${r.clienteEmail && r.clienteEmail !== 'N/A' ? ' · ✉️ ' + esc(r.clienteEmail) : ''}${r.clienteNif && r.clienteNif !== 'N/A' && r.clienteNif !== 'Consumidor Final' ? ' · NIF ' + esc(r.clienteNif) : ''}</small>
-                ${A.telValido(r.clienteTelemovel) ? `<br><button class="btn-whatsapp" data-wa="${r.id}">📲 Enviar Confirmação</button>` : ''}</span>
+                <br> ${r.diaTextoVisual} às ${r.hora} | <i>${esc(r.servicoNome)}</i>
+                <br><small> ${esc(r.clienteTelemovel)}${r.clienteEmail && r.clienteEmail !== 'N/A' ? ' · ' + esc(r.clienteEmail) : ''}${r.clienteNif && r.clienteNif !== 'N/A' && r.clienteNif !== 'Consumidor Final' ? ' · NIF ' + esc(r.clienteNif) : ''}</small>
+                ${A.telValido(r.clienteTelemovel) ? `<br><button class="btn-whatsapp" data-wa="${r.id}"> Enviar Confirmação</button>` : ''}</span>
                 <div style="display:flex;flex-direction:column;gap:6px;">
-                    ${podePagar ? `<button class="btn-small" style="background:#5cb85c" data-pago="${r.id}">Pago ✔</button>` : ''}
+                    ${podePagar ? `<button class="btn-small" style="background:#5cb85c" data-pago="${r.id}">Pago </button>` : ''}
                     ${!falta ? `<button class="btn-small" style="background:#f0ad4e" data-falta="${r.id}">Faltou</button>` : ''}
                     <button class="btn-small" data-del="${r.id}">Eliminar</button>
                 </div></div>`;
@@ -804,7 +804,7 @@
             let val = r.preco || 0;
             if (isVoucher(r.estadoPagamento)) val = 0; else if (isVoucherPago(r.estadoPagamento)) val = parseFloat(r.precoLimpo) || 0;
             if (isVoucher(r.estadoPagamento) && !falta) htmlV += `<div class="admin-list-item" style="flex-direction:column;align-items:flex-start;border-bottom:1px dashed #ccc;padding:8px 0;">
-                <span><strong>${esc(r.clienteNome)}</strong><br><small>📅 ${r.diaTextoVisual} | ${esc(r.servicoNome)}</small></span>
+                <span><strong>${esc(r.clienteNome)}</strong><br><small> ${r.diaTextoVisual} | ${esc(r.servicoNome)}</small></span>
                 <div style="display:flex;gap:5px;margin-top:5px;width:100%;"><input type="number" id="vou-${r.id}" placeholder="Limpo (€)" step="0.5" style="margin:0;padding:6px;width:100px;font-size:0.8rem;"><button class="btn-small" style="background:#8e44ad" data-vou="${r.id}">Confirmar OK</button></div></div>`;
             const c = cli[tel] = cli[tel] || { nome: r.clienteNome, total: 0, faltas: 0, gasto: 0, ultima: '' };
             c.total++; if (falta) c.faltas++; else c.gasto += val;

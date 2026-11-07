@@ -3,7 +3,7 @@
  * - avisoNovaMarcacao: quando entra uma marcação pelo site, avisa a dona no Telegram.
  * - resumoDiario: todos os dias à hora definida em loja.js, envia o resumo do dia e de amanhã.
  * - resumoAgora: o mesmo resumo a pedido (só para administradores autenticados).
- * O token do bot e o chat da dona ficam como segredos:  firebase functions:secrets:set TELEGRAM_TOKEN  e  TELEGRAM_CHAT
+ * O token do bot e o chat da dona ficam como segredos: firebase functions:secrets:set TELEGRAM_TOKEN e TELEGRAM_CHAT
  */
 const { onValueCreated } = require("firebase-functions/v2/database");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
@@ -39,7 +39,7 @@ exports.avisoNovaMarcacao = onValueCreated(
   async (event) => {
     const r = event.data.val();
     if (!r || r.pagamento === "Manual") return; // as manuais foram feitas pela própria dona
-    const texto = `✨ Nova marcação (site)!\nCliente: ${r.clienteNome}${r.clienteNif && r.clienteNif !== "Consumidor Final" ? `\nNIF: ${r.clienteNif}` : ""}\nTel: ${r.clienteTelemovel}\nServiço: ${r.servicoNome} (${eur(r.preco)})${r.prof ? `\nCom: ${nomeProf(r.prof)}` : ""}\nPagamento: ${r.pagamento}\nDia: ${r.diaTextoVisual} às ${r.hora}`;
+    const texto = `Nova marcação (site)!\nCliente: ${r.clienteNome}${r.clienteNif && r.clienteNif !== "Consumidor Final" ? `\nNIF: ${r.clienteNif}` : ""}\nTel: ${r.clienteTelemovel}\nServiço: ${r.servicoNome} (${eur(r.preco)})${r.prof ? `\nCom: ${nomeProf(r.prof)}` : ""}\nPagamento: ${r.pagamento}\nDia: ${r.diaTextoVisual} às ${r.hora}`;
     await admin.database().ref("notificacoes").push({
       texto: `Nova marcação de ${r.clienteNome} (${r.servicoNome} - ${eur(r.preco)}) para ${r.diaTextoVisual} às ${r.hora}`,
       data: new Date().toISOString(),
@@ -65,9 +65,9 @@ async function montarResumo() {
   });
   listaAmanha.sort((a, b) => a.hora.localeCompare(b.hora));
   const vis = (d) => d.split("-").reverse().join("/");
-  let t = `👑 *Resumo do Dia - ${LOJA.nome}*\n\n✅ *Hoje (${vis(hoje)}):*\nServiços realizados: ${nHoje}\nFaturação estimada: ${eur(fat)}\n\n📅 *Agenda de Amanhã (${vis(amanha)}):*\n`;
-  t += listaAmanha.length ? listaAmanha.map((r) => `🕒 ${r.hora} - ${r.clienteNome} (${r.servicoNome})${r.prof ? " · " + nomeProf(r.prof) : ""}`).join("\n") : "Sem marcações agendadas para amanhã.";
-  t += `\n\nBom descanso! ✨`;
+  let t = `*Resumo do Dia - ${LOJA.nome}*\n\n*Hoje (${vis(hoje)}):*\nServiços realizados: ${nHoje}\nFaturação estimada: ${eur(fat)}\n\n*Agenda de Amanhã (${vis(amanha)}):*\n`;
+  t += listaAmanha.length ? listaAmanha.map((r) => ` ${r.hora} - ${r.clienteNome} (${r.servicoNome})${r.prof ? " · " + nomeProf(r.prof) : ""}`).join("\n") : "Sem marcações agendadas para amanhã.";
+  t += `\n\nBom descanso!`;
   return t;
 }
 

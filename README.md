@@ -15,3 +15,7 @@ Cada loja é configurada num só ficheiro: [`public/loja.js`](public/loja.js).
 - **Segurança:** login Firebase Auth, dados das clientes privados, agenda pública só com horas ocupadas.
 
 Instruções completas em [LEIA-ME.md](LEIA-ME.md).
+
+## Licença
+
+© 2026 João Antunes (AW). Todos os direitos reservados. O código está público para consulta e demonstração; não pode ser copiado, alterado nem usado noutros sites sem autorização escrita.

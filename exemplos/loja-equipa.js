@@ -148,5 +148,5 @@ window.LOJA = {
   fuso: "Europe/Lisbon",
   resumoDiario: "19:30", // hora do resumo WhatsApp para a dona
 
-  creditos: { texto: "Licença atribuída a João Antunes", email: "j.p.r.n.antunes@gmail.com" }
+  creditos: { texto: "Site por AW · awdigital.pt", email: "awdigital.pt@gmail.com" }
 };

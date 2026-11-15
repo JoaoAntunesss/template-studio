@@ -125,7 +125,7 @@ window.LOJA = {
   // A public key do EmailJS é pública por natureza: restringe o domínio no painel do EmailJS.
   // ---------- RGPD (página privacidade.html e aviso na marcação) ----------
   // Preenche com os dados de quem é responsável pelo negócio. O que ficar vazio não aparece.
-  rgpd: { responsavel: "", nif: "", morada: "", email: "", retencao: "até 2 anos após a última marcação", prestador: "João Antunes (AW)" },
+  rgpd: { responsavel: "", nif: "", morada: "", email: "", retencao: "até 2 anos após a última marcação", prestador: "AW (awdigital.pt)" },
 
   emailjs: { publicKey: "", servico: "", template: "" },
 
@@ -143,7 +143,7 @@ window.LOJA = {
   resumoDiario: "19:30", // hora do resumo diário no Telegram da dona
 
   // Ligação "Pedir suporte" no painel do cliente. O botão aparece sempre.
-  // já vem preenchido; ao entregar um site junta o nome: "https://joaoantunesss.github.io/aw/#suporte?site=NOME-DO-SITE"
-  suporteUrl: "https://joaoantunesss.github.io/aw/#suporte",
-  creditos: { texto: "Licença atribuída a João Antunes", email: "j.p.r.n.antunes@gmail.com" }
+  // já vem preenchido; ao entregar um site junta o nome: "https://awdigital.pt/#suporte?site=NOME-DO-SITE"
+  suporteUrl: "https://awdigital.pt/#suporte",
+  creditos: { texto: "Site por AW · awdigital.pt", email: "awdigital.pt@gmail.com" }
 };

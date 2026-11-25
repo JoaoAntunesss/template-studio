@@ -10,6 +10,7 @@ window.LOJA = {
   nomeCurto: "Aurora", // nome na app instalada (PWA)
   slogan: "Beleza & Bem-estar",
   descricao: "Estúdio de beleza e estética — marcações online",
+  site: "", // endereço final do site, ex.: "https://studio.awdigital.pt" (usado no QR do cartaz). Vazio = o endereço onde o site está aberto
 
   // ---------- Aspeto ----------
   logo: "img/logo.svg",

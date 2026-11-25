@@ -1,5 +1,5 @@
 // Rede primeiro, cache como reserva (funciona offline com a última versão vista)
-const CACHE = 'salao-v1';
+const CACHE = 'salao-v2';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', e => {

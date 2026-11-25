@@ -75,11 +75,12 @@ a{color:inherit}
 }
 
 /* ---------- Hero ---------- */
+section[id]{scroll-margin-top:calc(var(--nav-h,80px) + 12px)}
 .hero{position:relative;min-height:min(820px,100svh);display:flex;align-items:center;color:#fff;overflow:hidden;isolation:isolate}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:-2;transform:scale(1.08);animation:heroZoom 2.4s var(--ease) forwards}
 .hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,color-mix(in srgb,var(--ink) 88%,transparent) 0%,color-mix(in srgb,var(--ink) 55%,transparent) 48%,color-mix(in srgb,var(--ink) 10%,transparent) 100%)}
 @keyframes heroZoom{to{transform:scale(1)}}
-.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:120px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding:max(120px,calc(var(--nav-h,0px) + 40px)) 0 90px}
 .hero-txt{max-width:640px}
 .hero-sl{font-size:1rem;opacity:.85;margin-bottom:18px}
 .hero h1{font-size:clamp(2.9rem,7vw,5.6rem);margin-bottom:22px}
@@ -107,7 +108,7 @@ a{color:inherit}
 .stars{color:#f5c76b;letter-spacing:2px;font-size:.9rem}
 @media (max-width:860px){
   .hero{min-height:auto;align-items:flex-end}
-  .hero .wrap{grid-template-columns:1fr;padding:130px 0 48px}
+  .hero .wrap{grid-template-columns:1fr;padding:max(130px,calc(var(--nav-h,0px) + 36px)) 0 48px}
   .hero-side{align-items:stretch}
   .hero-ctas .btn{flex:1}
   .nota{display:flex;align-items:center;gap:14px}.nota small{margin:0}
@@ -432,6 +433,7 @@ footer a{text-decoration:none}
     <span id="creditos"></span>
     <a href="privacidade.html">Privacidade</a>
     <a href="admin.html" id="admin-link"></a>
+    <button type="button" class="awi-btn" data-instalar hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7m-3-3 3 3 3-3M10 18.5h4"/></svg><span>Instalar a app</span></button>
   </div>
 </footer>
 
@@ -800,12 +802,19 @@ footer a{text-decoration:none}
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !A.DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
   let deferred; const banner = $('pwa-install-banner');
   const fechado = () => { try { return sessionStorage.getItem('pwaClosed'); } catch (e) { return null; } };
-  addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!fechado()) { banner.style.display = 'block'; $('btn-instalar-pwa').style.display = 'inline-block'; } });
+  addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!fechado() && !/[?&]instalar=1/.test(location.search)) { banner.style.display = 'block'; $('btn-instalar-pwa').style.display = 'inline-block'; } });
   const iOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (iOS && !navigator.standalone && !fechado()) setTimeout(() => { $('pwa-texto-instrucao').innerHTML = 'No iPhone: toque em <b>Partilhar</b> e depois em <b>Adicionar ao ecrã principal</b>.'; banner.style.display = 'block'; }, 4000);
+  if (iOS && !navigator.standalone && !fechado() && !/[?&]instalar=1/.test(location.search)) setTimeout(() => { $('pwa-texto-instrucao').innerHTML = 'No iPhone: toque em <b>Partilhar</b> e depois em <b>Adicionar ao ecrã principal</b>.'; banner.style.display = 'block'; }, 4000);
   $('btn-instalar-pwa').onclick = () => { if (deferred) { deferred.prompt(); deferred = null; banner.style.display = 'none'; } };
+  if (iOS) { $('btn-instalar-pwa').style.display = 'inline-block'; $('btn-instalar-pwa').textContent = 'Como instalar'; $('btn-instalar-pwa').onclick = () => { banner.style.display = 'none'; window.AWInstalar && window.AWInstalar.abrir(); }; }
   $('btn-fechar-pwa').onclick = () => { banner.style.display = 'none'; try { sessionStorage.setItem('pwaClosed', '1'); } catch (e) {} };
 })();
 </script>
+<script>
+// o topo pode ter barras (aviso, demonstração): o início da página desce o necessário
+(function () { const n = document.getElementById('nav'); if (!n) return; const a = () => document.documentElement.style.setProperty('--nav-h', n.offsetHeight + 'px'); a(); addEventListener('resize', a); addEventListener('load', a); setTimeout(a, 800); if (window.ResizeObserver) new ResizeObserver(a).observe(n); })();
+</script>
+<script src="vendor/qrcode.js"></script>
+<script src="instalar.js"></script>
 </body>
 </html>
